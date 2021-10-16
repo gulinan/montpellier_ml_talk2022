@@ -97,7 +97,7 @@ subsets (folds) </span></b> $\mathcal{I}_j$ of size $m=n/K$ at <b><span style="c
 knitr::include_graphics("imgs/K_CV_single.png")
 ```
 
-<font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font>
+<div style="text-align:right;"><font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font></div>
 
 ---
 
@@ -106,7 +106,7 @@ knitr::include_graphics("imgs/K_CV_single.png")
 - We calculate the prediction error of the model over fixed $\mathcal{I}_{1}$ set as follows:
 
 \begin{equation}
-\sum_{{i} \in \mathcal{I}_1} \frac{\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)} {m}.
+ \frac{1}{m} \sum_{{i} \in \mathcal{I}_1}\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}
 ---
 - In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we repeat this process for each fold ( $k=1,\ldots,K$ ).
@@ -116,7 +116,7 @@ knitr::include_graphics("imgs/K_CV_single.png")
 knitr::include_graphics("imgs/K_CV.png")
 ```
 
-<font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font>
+<div style="text-align:right;"><font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font></div>
 
 ---
 # CV estimate of prediction error
@@ -132,7 +132,7 @@ knitr::include_graphics("imgs/K_CV.png")
 - Let 
 $e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
 similarly.
-- Since $n=  K \times m$,  we can <b><span style="color:#067373;">re-define CV estimate of prediction error</span></b> as follows:
+- Since $n =  K \times m$,  we can **re-define** <b><span style="color:#067373;">CV estimate of prediction error</span></b> as follows:
 
 \begin{equation}
 	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
@@ -141,7 +141,7 @@ similarly.
 - An <b><span style="color:#067373;">estimate of the standard error of the prediction error</span></b> would be:
 
 \begin{equation}
-	\widehat{se}:=\frac{1} {\sqrt n} \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
+	\widehat{se}:=\frac{1} {\sqrt n} \times \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
 \end{equation}
 - where the second term in the multiplication refers to the  <b><span style="color:#067373;">empirical standard deviation of the $e_i$</span></b>. 
 ---
@@ -150,18 +150,25 @@ similarly.
 - A $100(1-\alpha)\%$ <b><span style="color:#067373;">confidence interval for prediction error</span></b> can be constructed as follows:
 
 \begin{equation}
-\(\bar e - z_{1-\(\frac{\alpha}{2}\)\widehat{se}, \bar e + z_{1-\(\frac{\alpha}{2}\)\widehat{se}\)
+\big(\bar e - z_{1-(\frac{\alpha}{2})} \times \widehat{se} \quad, \quad \bar e + z_{1-(\frac{\alpha}{2})} \times \widehat{se}\big)
 \end{equation}
 
-- where $z_{1- (\frac{\alpha} {2}) }$ is the $1- (\frac{\alpha} {2})$ quantile of the standard normal distribution. 
+- where $z_{1- (\frac{\alpha}{2}) }$ is the $1- (\frac{\alpha}{2})$ quantile of the standard normal distribution. 
 - The intervals are called as <b><span style="color:#067373;">naive cross-validation intervals</span></b>.
 ---
+# What prediction error are we estimating?
+<br>
 
+---
+
+```{r, echo=F, out.width="60%"}
+knitr::include_graphics("imgs/paper_fig2.png")
+```
 
 
 ---
 class: center, middle
 
-<br> Thank you!.. </br>
+<br> Merci!.. </br>
 
 

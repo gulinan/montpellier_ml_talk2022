@@ -100,7 +100,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 
 &lt;img src="imgs/K_CV_single.png" width="15%" style="display: block; margin: auto;" /&gt;
 
-&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
 ---
 
@@ -109,7 +109,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 - We calculate the prediction error of the model over fixed `\(\mathcal{I}_{1}\)` set as follows:
 
 `\begin{equation}
-\sum_{{i} \in \mathcal{I}_1} \frac{\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)} {m}.
+ \frac{1}{m} \sum_{{i} \in \mathcal{I}_1}\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}`
 ---
 - In &lt;b&gt;&lt;span style="color:#067373;"&gt;K-fold cross-validation&lt;/span&gt;&lt;/b&gt;, we repeat this process for each fold ( `\(k=1,\ldots,K\)` ).
@@ -117,7 +117,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 
 &lt;img src="imgs/K_CV.png" width="60%" style="display: block; margin: auto;" /&gt;
 
-&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
 ---
 # CV estimate of prediction error
@@ -133,7 +133,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 - Let 
 `\(e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)\)` for each `\(i \in \mathcal{I}_k\)` ( `\(k=1,\ldots,K\)` ), and the errors `\(e_i\)` for points in other folds are defined
 similarly.
-- Since `\(n=  K \times m\)`,  we can &lt;b&gt;&lt;span style="color:#067373;"&gt;re-define CV estimate of prediction error&lt;/span&gt;&lt;/b&gt; as follows:
+- Since `\(n =  K \times m\)`,  we can **re-define** &lt;b&gt;&lt;span style="color:#067373;"&gt;CV estimate of prediction error&lt;/span&gt;&lt;/b&gt; as follows:
 
 `\begin{equation}
 	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
@@ -142,7 +142,7 @@ similarly.
 - An &lt;b&gt;&lt;span style="color:#067373;"&gt;estimate of the standard error of the prediction error&lt;/span&gt;&lt;/b&gt; would be:
 
 `\begin{equation}
-	\widehat{se}:=\frac{1} {\sqrt n} \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
+	\widehat{se}:=\frac{1} {\sqrt n} \times \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
 \end{equation}`
 - where the second term in the multiplication refers to the  &lt;b&gt;&lt;span style="color:#067373;"&gt;empirical standard deviation of the `\(e_i\)`&lt;/span&gt;&lt;/b&gt;. 
 ---
@@ -151,19 +151,24 @@ similarly.
 - A `\(100(1-\alpha)\%\)` &lt;b&gt;&lt;span style="color:#067373;"&gt;confidence interval for prediction error&lt;/span&gt;&lt;/b&gt; can be constructed as follows:
 
 `\begin{equation}
-\(\bar e - z_{1-\(\frac{\alpha}{2}\)\widehat{se}, \bar e + z_{1-\(\frac{\alpha}{2}\)\widehat{se}\)
+\big(\bar e - z_{1-(\frac{\alpha}{2})} \times \widehat{se} \quad, \quad \bar e + z_{1-(\frac{\alpha}{2})} \times \widehat{se}\big)
 \end{equation}`
 
-- where `\(z_{1- (\frac{\alpha} {2}) }\)` is the `\(1- (\frac{\alpha} {2})\)` quantile of the standard normal distribution. 
+- where `\(z_{1- (\frac{\alpha}{2}) }\)` is the `\(1- (\frac{\alpha}{2})\)` quantile of the standard normal distribution. 
 - The intervals are called as &lt;b&gt;&lt;span style="color:#067373;"&gt;naive cross-validation intervals&lt;/span&gt;&lt;/b&gt;.
 ---
+# What prediction error are we estimating?
+&lt;br&gt;
 
+---
+
+&lt;img src="imgs/paper_fig2.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: center, middle
 
-&lt;br&gt; Thank you!.. &lt;/br&gt;
+&lt;br&gt; Merci!.. &lt;/br&gt;
 
 
     </textarea>
