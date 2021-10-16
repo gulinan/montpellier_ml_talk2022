@@ -1,0 +1,79 @@
+
+
+.large {
+  font-size: 30px;
+}
+
+.small {
+  font-size: 15px;
+}
+
+/* regular slide */
+.remark-slide-content {
+  background-color: #FAFAFA;
+  border-bottom: 5px solid #47727a;
+  border-top: 80px solid #47727a;
+  font-size: 27px;
+  font-weight: 200;
+  line-height: 1.2;
+  padding: 1em 3em 1em 3em;
+}
+
+
+.remark-code {
+  font-size: 20px
+}
+
+.remark-inline-code {
+  font-size: 30px
+}
+
+.remark-slide-content h1 {
+  font-size: 35px;
+}
+
+.remark-slide-content h2 {
+  font-size: 35px;
+}
+
+.title-slide h1  {
+  color: #1A292C;
+  font-size: 35px;
+  text-shadow: none;
+  font-weight: 400;
+  text-align: left;
+  margin-left: 15px;
+  padding-top: 0px;
+}
+.title-slide h2  {
+  margin-top: -25px;
+  padding-top: 0px;
+  color: #1A292C;
+  text-shadow: none;
+  font-weight: 300;
+  font-size: 30px;
+  text-align: left;
+  margin-left: 15px;
+}
+.title-slide h3  {
+  color: #1A292C;
+  text-shadow: none;
+  font-weight: 300;
+  font-size: 25px;
+  text-align: left;
+  margin-left: 15px;
+ 
+}
+
+hr, .title-slide h2::after, .mline h1::after {
+  content: '';
+  border: none;
+  background-color: #EB811B;
+  color: #EB811B;
+  height: 1px;
+}
+
+.title-slide {
+  background-color: #FAFAFA;
+  border-top: 80px solid #FAFAFA;
+}

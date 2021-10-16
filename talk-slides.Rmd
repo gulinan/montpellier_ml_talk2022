@@ -1,0 +1,167 @@
+---
+title: "<b>Cross-validation: What does it estimate and how well does it?</b>"
+subtitle: "by Stephen Bates, Trevor Hastie, and Robert Tibshirani <br> " 
+author: "Gül İnan <br> "
+institute: " <br>Istanbul Technical University"
+date: " <br><i>November 25th, 2021 </i>"
+output:
+  xaringan::moon_reader:
+    css: ["metropolis", "cal.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-forest-light
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r xaringan-scribble, echo=FALSE}
+xaringanExtra::use_scribble(pen_color="#1A292C") #activate for the pencil
+xaringanExtra::use_panelset() #panel set
+```
+
+```{r include = FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.align = "center")
+library(tidyverse)
+```
+
+
+# Motivation
+<br>
+- In machine learning, when deploying a <b><span style="color:#067373;">predictive model</span></b>, the interest is in understanding its <b><span style="color:#067373;">prediction accuracy</span></b> on future test points. 
+- The standard measure of accuracy for a predictive model is the <b><span style="color:#067373;">prediction error</span></b>, i.e., the <b><span style="color:#067373;">expected loss on future points</span></b>.
+
+---
+
+# Aim
+
+
+
+---
+# Setting and notation
+<br>
+- Consider a <b><span style="color:#067373;">supervised learning </span></b> setting.  
+- We have <b><span style="color:#067373;">features</span></b> $X=(X_1, \ldots, X_i, \ldots X_n)  \in \mathcal{X}^{n}$ with each $X_i \in \mathbb{R}^{p}$
+and <b><span style="color:#067373;">responses</span></b> $Y=(Y_1, \ldots, Y_i, \ldots, Y_n)  \in \mathcal{Y}^{n}$.
+- We assume that the <b><span style="color:#067373;">data points</span></b> $(X_i,Y_i)$ for $i=1,\ldots,n$
+are i.i.d. from a <b><span style="color:#067373;"> distribution</span></b> $P$. 
+
+---
+# Setting and notation continu'ed
+<br>
+- Consider a <b><span style="color:#067373;">class of models parameterized</span></b> by $\theta$.
+- We let $f(X, \theta)$ be the <b><span style="color:#067373;">function that predicts</span></b> $y$ from $x \in \mathbb{R}^{p}$, where $\theta$ takes values in some space $\Theta$.
+- We let $\mathcal{A}$ be a <b><span style="color:#067373;">model-fitting algorithm</span></b> that takes data points and returns a parameter vector $\theta \in \Theta$ and $\hat \theta =\mathcal{A}(X,Y)$ be the <b><span style="color:#067373;"fitted value of the parameter</span></b> based on the observed data $X$ and $Y$. 
+
+---
+# Prediction error 
+<br>
+- In <b><span style="color:#067373;">measuring accuracy of a model</span></b>, we are interested in <b><span style="color:#067373;">out-of-sample error</span></b> which is defined as the <b><span style="color:#067373;">expected loss</span></b>:
+
+\begin{equation}
+Err_{XY}: = \mathbb{E}\big[	\ell (\hat{f}(X_{n+1},\hat \theta ),Y_{n+1}) \vert (X,Y) \big] , \nonumber
+\end{equation}
+
+- where $(X_{n+1},Y_{n+1})$ is an <b><span style="color:#067373;">independent test point</span></b> from the same distribution $P$. 
+- The expression $\hat{f}(X_{n+1},\hat \theta)$ is the <b><span style="color:#067373;">predicted value of $Y_{n+1}$</span></b> at the future point $X_{n+1}$ and $\hat \theta$ which is estimated through algorithm $\mathcal{A}$ based on the training data $(X,Y)$.
+- The expression $\ell (\hat{f}(X_{n+1},\hat \theta ),Y_{n+1})$ is the <b><span style="color:#067373;">loss</span></b> between predicted value of $Y_{n+1}$ and $Y_{n+1}$ itself.
+- Here, the <b><span style="color:#067373;">loss function</span></b> $\ell(.)$ could be squared error loss, classification error, or deviance (cross-entropy). 
+- Furthermore $Err_{XY}$ can be considered as a <b><span style="color:#067373;">random quantity</span></b>  depending on the training data $(X,Y)$.
+
+---
+# Expected prediction error
+<br>
+- In designing and comparing <b><span style="color:#067373;">learning algorithms</span></b> themselves, we are interested in their <b><span style="color:#067373;">average performance on predicting future test points</span></b>.
+- We can formally define it as
+the <b><span style="color:#067373;">expected value of prediction error when training over possible data sets of size n drawn from the same the data distribution $P$</span></b>:
+
+\begin{equation}
+Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
+\end{equation}
+
+---
+
+- Note that when the **data distribution** $P$ is **unknown**, estimates of the quantities $Err_{XY}$ and $Err$ cannot be computed.
+- Then, the quantities $Err_{XY}$ and $Err$ can be estimated through **resampling based methods** such as Cross-validation, Boostrap, and Jacknife or **analytical methods** such as AIC, BIC, Mallow's $C_p$, and covariance penalties.
+
+
+---
+# K-fold cross-validation
+<br>
+- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we partition the data into equally sized <b><span style="color:#067373;">disjoint
+subsets (folds) </span></b> $\mathcal{I}_j$ of size $m=n/K$ at <b><span style="color:#067373;">random</span></b> ( $k=1,\ldots,K$ ).
+- We also write ${i} \in \mathcal{I}_k$ for $(x_i,y_i) \in \mathcal{I}_k$.
+
+```{r, echo=F, out.width="15%"}
+knitr::include_graphics("imgs/K_CV_single.png")
+```
+
+<font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font>
+
+---
+
+- Consider the first fold and hold it out as future data set (or <b><span style="color:#067373;">test set</span></b>).
+- Let $\hat \theta^{(-1)} = \mathcal{A}(X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}$  be the model fit to only those points that are not in the first fold (remaining sets are called as <b><span style="color:#067373;">training set</span></b>). 
+- We calculate the prediction error of the model over fixed $\mathcal{I}_{1}$ set as follows:
+
+\begin{equation}
+\sum_{{i} \in \mathcal{I}_1} \frac{\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)} {m}.
+\end{equation}
+---
+- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we repeat this process for each fold ( $k=1,\ldots,K$ ).
+
+
+```{r, echo=F, out.width="60%"}
+knitr::include_graphics("imgs/K_CV.png")
+```
+
+<font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font>
+
+---
+# CV estimate of prediction error
+<br>
+- The <b><span style="color:#067373;">CV estimate of prediction error</span></b> is the average of errors over K folds, given as follows:
+
+\begin{equation}
+	\widehat {Err } ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
+\end{equation}
+
+- Intuitively, the inner sum is an estimate for $Err_{XY}$ for a fixed fold, and the outer sum estimates $Err$ with $\mathcal{I}_k$  ( $k=1,\ldots,K$ ) being different folds from the same data set.
+---
+- Let 
+$e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
+similarly.
+- Since $n=  K \times m$,  we can <b><span style="color:#067373;">re-define CV estimate of prediction error</span></b> as follows:
+
+\begin{equation}
+	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
+\end{equation}
+
+- An <b><span style="color:#067373;">estimate of the standard error of the prediction error</span></b> would be:
+
+\begin{equation}
+	\widehat{se}:=\frac{1} {\sqrt n} \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
+\end{equation}
+- where the second term in the multiplication refers to the  <b><span style="color:#067373;">empirical standard deviation of the $e_i$</span></b>. 
+---
+# A $100(1-\alpha)\%$ confidence interval for prediction error
+<br>
+- A $100(1-\alpha)\%$ <b><span style="color:#067373;">confidence interval for prediction error</span></b> can be constructed as follows:
+
+\begin{equation}
+\(\bar e - z_{1-\(\frac{\alpha}{2}\)\widehat{se}, \bar e + z_{1-\(\frac{\alpha}{2}\)\widehat{se}\)
+\end{equation}
+
+- where $z_{1- (\frac{\alpha} {2}) }$ is the $1- (\frac{\alpha} {2})$ quantile of the standard normal distribution. 
+- The intervals are called as <b><span style="color:#067373;">naive cross-validation intervals</span></b>.
+---
+
+
+
+---
+class: center, middle
+
+<br> Thank you!.. </br>
+
+
