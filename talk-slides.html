@@ -34,14 +34,23 @@ class: center, middle, inverse, title-slide
 
 # Motivation
 &lt;br&gt;
-- In machine learning, when deploying a &lt;b&gt;&lt;span style="color:#067373;"&gt;predictive model&lt;/span&gt;&lt;/b&gt;, the interest is in understanding its &lt;b&gt;&lt;span style="color:#067373;"&gt;prediction accuracy&lt;/span&gt;&lt;/b&gt; on future test points. 
+- In machine learning applications, when deploying a &lt;b&gt;&lt;span style="color:#067373;"&gt;predictive model&lt;/span&gt;&lt;/b&gt;, the interest is on understanding its &lt;b&gt;&lt;span style="color:#067373;"&gt;prediction accuracy&lt;/span&gt;&lt;/b&gt; on future test points. 
 - The standard measure of accuracy for a predictive model is the &lt;b&gt;&lt;span style="color:#067373;"&gt;prediction error&lt;/span&gt;&lt;/b&gt;, i.e., the &lt;b&gt;&lt;span style="color:#067373;"&gt;expected loss on future points&lt;/span&gt;&lt;/b&gt;.
 - Both &lt;b&gt;&lt;span style="color:#067373;"&gt;good point estimates&lt;/span&gt;&lt;/b&gt; and &lt;b&gt;&lt;span style="color:#067373;"&gt;accurate confidence intervals&lt;/span&gt;&lt;/b&gt; for prediction error are essential.
+- From a practical point of view, &lt;b&gt;&lt;span style="color:#067373;"&gt;cross-validation (CV)&lt;/span&gt;&lt;/b&gt; is a widely-used approach
+to estimate a point estimate and to build confidence intervals for prediction error.
 ---
-
 # Aim
+&lt;br&gt;
+- However, &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; show that:
+   - the &lt;b&gt;&lt;span style="color:#067373;"&gt;estimand &lt;/span&gt;&lt;/b&gt;corresponding to CV point estimate is not the accuracy of the model fit on the data at hand, 
+   - 
+   - the &lt;b&gt;&lt;span style="color:#067373;"&gt;naive confidence intervals&lt;/span&gt;&lt;/b&gt; based on CV give poor coverage, which are far below nominal level.
 
+---
+# Aim Continu'ed
 
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; discuss that 
 
 ---
 # Setting and notation
@@ -82,7 +91,7 @@ Err_{XY}: = \mathbb{E}\big[	\ell (\hat{f}(X_{n+1},\hat \theta ),Y_{n+1}) \vert (
 the &lt;b&gt;&lt;span style="color:#067373;"&gt;expected value of prediction error when training over possible data sets of size n drawn from the same the data distribution `\(P\)`&lt;/span&gt;&lt;/b&gt;:
 
 `\begin{equation}
-Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
+Err :=\mathbb{E}\big[Err_{XY} | X \big].\nonumber
 \end{equation}`
 
 ---
@@ -98,7 +107,10 @@ Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
 subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` at &lt;b&gt;&lt;span style="color:#067373;"&gt;random&lt;/span&gt;&lt;/b&gt; ( `\(k=1,\ldots,K\)` ).
 - We also write `\({i} \in \mathcal{I}_k\)` for `\((x_i,y_i) \in \mathcal{I}_k\)`.
 
-&lt;img src="imgs/K_CV_single.png" width="15%" style="display: block; margin: auto;" /&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/K_CV_single.png" alt="&amp;lt;i&amp;gt;Partition of the data into K-folds.&amp;lt;/i&amp;gt;" width="15%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Partition of the data into K-folds.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
@@ -112,10 +124,13 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
  \frac{1}{m} \sum_{{i} \in \mathcal{I}_1}\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}`
 ---
-- In &lt;b&gt;&lt;span style="color:#067373;"&gt;K-fold cross-validation&lt;/span&gt;&lt;/b&gt;, we repeat this process for each fold ( `\(k=1,\ldots,K\)` ).
+- In &lt;b&gt;&lt;span style="color:#067373;"&gt;K-fold cross-validation&lt;/span&gt;&lt;/b&gt;, we repeat this process for each fold `\((k=1,\ldots,K)\)`.
 
 
-&lt;img src="imgs/K_CV.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/K_CV.png" alt="&amp;lt;i&amp;gt;K-fold cross-validation.&amp;lt;/i&amp;gt;" width="60%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;K-fold cross-validation.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
@@ -125,7 +140,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 - The &lt;b&gt;&lt;span style="color:#067373;"&gt;CV estimate of prediction error&lt;/span&gt;&lt;/b&gt; is the average of errors over K folds, given as follows:
 
 `\begin{equation}
-	\widehat {Err} ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
+	\widehat {Err} ^{(CV)} := \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}`
 
 - Intuitively, the inner sum is an estimate for `\(Err_{XY}\)` for a fixed fold, and the outer sum estimates `\(Err\)` with `\(\mathcal{I}_k\)`  ( `\(k=1,\ldots,K\)` ) being different folds from the same data set.
@@ -139,23 +154,7 @@ similarly.
 	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
 \end{equation}`
 
-- An &lt;b&gt;&lt;span style="color:#067373;"&gt;estimate of the standard error of the prediction error&lt;/span&gt;&lt;/b&gt; would be:
 
-`\begin{equation}
-	\widehat{se}:=\frac{1} {\sqrt n} \times \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
-\end{equation}`
-- where the second term in the multiplication refers to the  &lt;b&gt;&lt;span style="color:#067373;"&gt;empirical standard deviation of the `\(e_i\)`&lt;/span&gt;&lt;/b&gt;. 
----
-# A `\(100(1-\alpha)\%\)` confidence interval for prediction error
-&lt;br&gt;
-- A `\(100(1-\alpha)\%\)` &lt;b&gt;&lt;span style="color:#067373;"&gt;confidence interval for prediction error&lt;/span&gt;&lt;/b&gt; can be constructed as follows:
-
-`\begin{equation}
-\big(\bar e - z_{1-(\frac{\alpha}{2})} \times \widehat{se} \quad, \quad \bar e + z_{1-(\frac{\alpha}{2})} \times \widehat{se}\big)
-\end{equation}`
-
-- where `\(z_{1- (\frac{\alpha}{2}) }\)` is the `\(1- (\frac{\alpha}{2})\)` quantile of the standard normal distribution. 
-- The intervals are called as &lt;b&gt;&lt;span style="color:#067373;"&gt;naive cross-validation intervals&lt;/span&gt;&lt;/b&gt;.
 ---
 # What prediction error are we estimating?
 &lt;br&gt;
@@ -164,12 +163,323 @@ similarly.
 from the underlying distribution `\(P\)`.
 - The former quantity is of the most interest to a practitioner deploying a specific mode, whereas the latter  may be of interest to a researcher comparing different fitting algorithms.
 ---
+# `\(Err_{X}\)`:  A different target of inference
+&lt;br&gt;
+- Assume a &lt;b&gt;&lt;span style="color:#067373;"&gt;homoskedastic Gaussian linear model&lt;/span&gt;&lt;/b&gt; as follows:
 
-&lt;img src="imgs/paper_fig2.png" width="60%" style="display: block; margin: auto;" /&gt;
+`\begin{equation}
+y_i = x_{i}^{T} \theta + \epsilon_i \quad \text{where} \quad \epsilon_i \overset{i.i.d.}{\sim} N(0,\sigma^2)  \quad \text{i=1,...,n.}
+\end{equation}`
+
+- Define a &lt;b&gt;&lt;span style="color:#067373;"&gt;new key quantity&lt;/span&gt;&lt;/b&gt; as follows:
+
+`\begin{equation}
+Err_{X} := \mathbb{E}[Err_{XY} | X],
+\end{equation}`
+
+- which &lt;b&gt;&lt;span style="color:#067373;"&gt;falls between Err&lt;/span&gt;&lt;/b&gt; and &lt;b&gt;&lt;span style="color:#067373;"&gt; `\(Err_{XY}\)`&lt;/span&gt;&lt;/b&gt; as visualized below:
+
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/paper_fig2.png" alt="&amp;lt;i&amp;gt;Possible targets of inference for cross-validation.&amp;lt;/i&amp;gt;" width="60%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Possible targets of inference for cross-validation.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+$$ \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}$$ 
+
+- **Lemma 1:** When Ordinary Least Squares (OLS) is used as the fitting
+algorithm along with a squared-error loss, the CV estimate of prediction error, 
+`\(\widehat {Err}^{(CV)}\)` is linearly invariant.
+
+--
+
+- &lt;&lt; The CV estimate of prediction is the same for both the **original data** `\((y_{i})\)` and 
+**shifted data** `\((y_{i}^{'} = y_{i} + x_{i}^{T} \kappa)\)` since the residual is the same when using the `\((x_{1}, y_{1}),...,(x_{n}, y_{n})\)` or the shifted data `\((x_{1}, y_{1}^{'}),...,(x_{n}, y_{n}^{'})\)`. &gt;&gt;
+
+---
+&lt;br&gt;
+- **Theorem 1:** Assume homoskedastic Gaussian linear model holds and that we use
+squared-error loss. Let `\(\widehat {Err}\)` be a **linearly invariant estimate of prediction
+error** (such as `\(\widehat {Err}^{(CV)}\)` using OLS as the fitting algorithm). Then,
+
+`\begin{equation}
+Err_{XY} \perp \widehat {Err} \quad | \quad X.
+\end{equation}`
+
+--
+- &lt;&lt; Recall from classical linear regression theory that when using OLS, the **estimated coefficient** vector `\(\widehat {\theta}\)` is independent of the **residuals** `\((Y-X\widehat {\theta})\)`:
+
+`\begin{equation}
+\widehat {\theta} \perp (Y-X\widehat {\theta}) \quad | \quad X.
+\end{equation}`
+
+- Since `\(Err_{XY}\)`  is a function of only of `\(\widehat {\theta}\)`, which the OLS estimate of `\(\theta\)` based on full sample, and any linearly invariant estimate of prediction error `\(Err\)`  is a function only of residuals, `\(Y-X\widehat {\theta}\)`, by the invariance property, then `\(Err_{XY} \perp \widehat {Err} \quad | \quad X\)`. &gt;&gt;
+
+---
+&lt;br&gt;
+- **Remark 1:** Suppose we have two data sets `\((X,Y)\)` and `\((X, Y^{'})\)` that share the same feature matrix `\(X\)`. Let `\(Err_{XY}\)` and `\(Err_{XY^{'}}\)` be true errors of the model fit with these two data sets, respectively. Next, suppose we perform cross-validation on `\((X,Y)\)` to get an estimate `\(Err_{XY}\)` and do the same on `\((X, Y^{'})\)` to get an estimate `\(Err_{XY^{'}}\)`. Theorem 1 implies that
+
+`\begin{equation}
+(Err_{XY}, \widehat Err_{XY}^{CV}) \overset{d}{=}  (Err_{XY}, \widehat Err_{XY^{'}}^{CV}).
+\end{equation}`
+
+--
+
+- &lt;&lt; This means that for the purpose of estimating `\(Err_{XY}\)`, we have no reason to prefer using the cross-validation estimate with
+`\((X,Y)\)` to using the cross-validation estimate with a different data set `\((X, Y^{'})\)`, even though we wish to estimate the error of the model fit on `\((X,Y)\)`. &gt;&gt;
+
+---
+- **Corollary 1:**  Under the conditions of Theorem 1,
+
+`\begin{equation}
+\mathbb{E}\Big[\big(\widehat Err-Err_{XY}\big)^2\Big] = \mathbb{E}\Big[\big(\widehat Err-Err_{X}\big)^2\Big] + \mathbb{E}\Big[\big( Err_{X}-Err_{XY}\big)^2\Big].
+\end{equation}`
+
+--
+
+- &lt;&lt; Any linearly invariant estimator (such as cross-validation `\(Err^{CV}\)`) has larger mean squared error as an estimate of `\(Err_{XY}\)` than as an estimate of `\(Err_{X}\)`. &gt;&gt;
+
+- This implies that `\(\widehat Err^{CV}\)` is a better estimate of an intermediate quantity `\(Err_{X}\)` than of `\(Err_{XY}\)`.
+
+---
+# Example
+&lt;br&gt;
+- Consider an experiment in a simple linear model with `\(n=100\)` observations
+and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated `\(n=2000\)` times with the same feature matrix `\(X\)`.
+
+&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+- Left: MSE of CV point estimate of prediction relative to the estimands: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
+- Center: Coverage of `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)` by the naive cross-validation intervals, where nominal miscoverage rate is `\(10\%\)`.
+
+---
+- We see that CV point estimate has lower MSE for `\(Err_{X}\)` than `\(Err_{XY}\)`.
+- The naive CV intervals cover `\(Err_{X}\)` more often than they cover `\(Err_{XY}\)`.
+
+&lt;br&gt;
+
+&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Relationship between `\(Err\)` and `\(Err_{X}\)`
+&lt;br&gt;
+- The conditional variance decomposition of the variance of `\(Err_{XY}\)`:
+
+`\begin{align}
+Var(Err_{XY}) &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}_{X}[Err_{XY}|X]\big) \\
+              &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(Err_{X}\big),
+\end{align}`
+
+- `\(Var\big(Err_{X}\big)\)`: is the variance caused by the randomness in `\(X\)` and
+- `\(\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]\)`: is the variance caused by the randomness in `\(Y | X\)`.
+
 
 
 ---
+# Relationship between `\(Err\)` and `\(Err_{X}\)`
+&lt;br&gt;
+- **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors `\(X \sim N(0,\Sigma_p)\)` for any
+full-rank `\(\Sigma_p\)`. Then, for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`, we have:
+
+
+`\begin{align}
+\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] = \Theta(1/n) \quad \text{and} \\
+Var\big(Err_{X}\big) = \mathbb{E}(Err_{X}-Err)^2 = \Theta(1/n^2).
+\end{align}`
+
+- We see that the randomness caused by `\(Y\)` given `\(X\)` is of larger order than that due the randomness in `\(X\)`.
+---
+- The variance of `\(Err_{X}\)` (which also has mean `\(Err\)`) is small compared with the variance of `\(Err_{XY}\)` (which also has mean `\(Err\)`), showing that `\(Err_{X}\)` is close to `\(Err\)`.
+- Note that MSE and coverage of cross-validation is similar when estimating either `\(Err\)` or `\(Err_{X}\)`, but significantly different when estimating `\(Err_{XY}\)`.
+
+&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+- In the proportional asymptotic limit, implies that `\(	\widehat {Err} ^{(CV)}\)`
+is closer to `\(Err\)` and `\(Err_{X}\)` than to `\(Err_{XY}\)`.
+
+- **Corollary 2:** In the setting of Theorem 2,
+
+`\begin{align}
+cor(Err_{XY}, Err_{X}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
+\end{align}`
+
+- Moreover, for any linearly invariant estimator `\(\widehat {Err}\)` (such as `\(	\widehat {Err} ^{(CV)}\)` using OLS as the fitting algorithm), 
+
+`\begin{align}
+cor(Err_{XY}, \widehat{Err}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
+\end{align}`
+
+- This implies that `\(	\widehat{Err}^{(CV)}\)` is asymptotically uncorrelated with `\(Err_{XY}\)`.
+
+---
+- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
+then refit on the whole data set), Mallow's `\(C_p\)` and bootstrap.
+
+---
+# Dependence structure of CV errors
+- Remember that
+`\(e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)\)` for each `\(i \in \mathcal{I}_k\)` ( `\(k=1,\ldots,K\)` ), and the errors `\(e_i\)` for points in other folds are defined
+similarly.
+- The cross-validation estimate of the prediction error is:
+
+`\begin{equation}
+	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
+\end{equation}`
+
+- Assuming that `\(e_i\)`'s are i.i.d., an &lt;b&gt;&lt;span style="color:#067373;"&gt;estimate of the standard error of the prediction error&lt;/span&gt;&lt;/b&gt; would be:
+
+`\begin{equation}
+	\widehat{se}^{(CV)}:=\frac{1} {\sqrt n} \times \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
+\end{equation}`
+- where the second term in the multiplication refers to the  &lt;b&gt;&lt;span style="color:#067373;"&gt;empirical standard deviation of the `\(e_i\)`&lt;/span&gt;&lt;/b&gt;. 
+
+---
+# A `\(100(1-\alpha)\%\)` confidence interval for prediction error
+&lt;br&gt;
+- A `\(100(1-\alpha)\%\)` &lt;b&gt;&lt;span style="color:#067373;"&gt;confidence interval for prediction error&lt;/span&gt;&lt;/b&gt; can be constructed as follows:
+
+`\begin{equation}
+\Big(\widehat {Err}^{(CV)} - z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \quad, \quad \widehat {Err}^{(CV)} + z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \Big)
+\end{equation}`
+
+- where `\(z_{1- (\frac{\alpha}{2}) }\)` is the `\(1- (\frac{\alpha}{2})\)` quantile of the standard normal distribution. 
+- The intervals are called as &lt;b&gt;&lt;span style="color:#067373;"&gt;naive cross-validation intervals&lt;/span&gt;&lt;/b&gt;.
+
+- However, since every data point is used in both in training and testing, we cannot accept that are `\(e_i\)`'s are independent of each other. 
+
+- As K approaches to n, correlations between `\(e_i\)`'s would increase, and hence would results in higher variance.
+
+- Any confidence interval built using will be too small and have poor coverage.
+
+---
+# Example
+
+- Consider a sparse logistic model:
+
+`\begin{align}
+Pr(Y_i = 1 | X_i = x_i) = \frac{1}{1 + exp(-x_{i}^{T}\theta)}, \quad \text{i=1,...,n},
+\end{align}`
+
+- where `\(n=90\)` observations of `\(p=1000\)` features, and a coefficient 
+`\(\theta = c \times (1,1,1,1,0,0,...)^{T} \in \mathcal{R}^{p}\)` and `\(c\)` is chosen such that misclassification rate is `\(20 \%\)`.
+
+- We estimate the parameters using `\(\ell_1-\)` penalized logistic regression with a fixed
+penalty level.
+
+---
+&lt;br&gt;
+- In this case, naive confidence intervals for prediction error are far too small: intervals with desired miscoverage of `\(10\%\)` give `\(31\%\)` miscoverage in our simulation.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/logistic_cv.png" alt="&amp;lt;i&amp;gt;Structure of the covariance matrix of errrors.&amp;lt;/i&amp;gt;" width="45%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Structure of the covariance matrix of errrors.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+---
+&lt;style type="text/css"&gt;
+.pull-left {
+  float: left;
+  width: 50%;
+}
+.pull-right {
+  float: right;
+  width: 50%;
+}
+&lt;/style&gt;
+
+.pull-left[
+- The fundamental paper of Bengio and Grandvalet (2004) gives the key structure of the covariance matrix of `\(e_i\)`'s such that:
+
+`\begin{equation}
+Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{n}a_3,
+\end{equation}`
+
+- where `\(a_1=Var(e_i)\)` is the variance of the diagonal elements,
+- `\(a_2 = Cov(e_i, e_j)\)` is the covariance of the off-diagonal elements within the same fold (in-block covariance of errors due to a common training set), and
+- `\(a_3 = Cov(e_i, e_j)\)`  is the covariance between-blocks covariance due the dependence between training sets `\(\mathcal{I}_k\)`  `\((k=1,\ldots,K)\)`.
+
+
+
+]
+
+
+.pull-right[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/covariance_structure.png" alt="&amp;lt;i&amp;gt;Structure of the covariance matrix of errrors.&amp;lt;/i&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Structure of the covariance matrix of errrors.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.jmlr.org/papers/volume5/grandvalet04a/grandvalet04a.pdf"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
+]
+
+---
+- The constants `\(a_2\)` and `\(a_3\)` will typically be positive, in which case 
+
+`\begin{equation}
+Var(\widehat {Err}^{(CV)}) &gt; \frac{1}{n}a_1,
+\end{equation}`
+
+- so estimating the variance of `\(\widehat{Err}^{(CV)}\)` as `\(\widehat{se}^2\)` results in an estimate that it is too small, and, in turn, poor coverage.
+
+
+---
+# Target of inference
+
+- **Definition 2:** For a sample of size n split into K folds, the cross-validation MSE is:
+
+`\begin{equation}
+MSE_{K,n} := \mathbb{E}\big[ (\widehat {Err}^{(CV)} - Err_{XY})^2 \big]
+\end{equation}`
+
+- Due to technical reasons, MSE is defined with respect to  `\(Err_{XY}\)`
+- MSE contains both a bias term and variance term, but the bias typically
+small for cross-validation [Efron, 1983; Efron and Gong, 1983; Efron and Tibshirani, 1997].
+- We can view the MSE as a slightly conservative version of the variance of the cross-validation estimator, i.e., the squared standard error.
+- We will use an estimate of the MSE to construct confidence intervals for `\(Err_{XY}\)` since it is what
+typically matters for practical applications.
+- With this in mind, we will use an estimate of the MSE to construct confidence intervals for `\(Err_{XY}\)`. 
+
+---
+# Algorithm: Nested cross validaion
+
+- Split D into K folds with K-1 building `\(D_{train}\)` and the remaining
+one being `\(D_{out}\)`, with indices `\(I_{out}\)`.
+- For each split j:
+  - Compute `\(\epsilon_j := \bar{e}_{in}=\widehat {Err}_{\tilde X \tilde Y}\)` with (K-2)-fold
+  CV over K-1 folds in `\(D_{in}\)`.
+  - Train model on `\(D_{train}\)`. Compute `\(e_{i}\)` for all samples `\((x_i,y_i) \in D_{out}\)`.
+  - Compute `\(\bar e_{out} := \text{mean of} \quad \{e_i\}_{e \in I_{out}}\)`
+  - Set `\(a_j := (\widehat {Err}_{\tilde X \tilde Y} - \bar e_{out})^2\)` (estimate of (a)).
+  - Set `\(b_j := \text{empirical variance of} \quad \{e_i\}_{e \in I_{out}}\)` (estimate of (b)).
+- Output  `\(\widehat{MSE} = mean(a_j)-mean(b_j)\)`. 
+- Output `\(\widehat {Err}^{(NCV)} := mean(\epsilon_j)\)`.
+ 
+
+
+---
+# Estimation of bias
+
+`\begin{equation}
+\widehat {Err}^{(NCV)} - \widehat {Err}^{(CV)}
+\end{equation}`
+
+
+`\begin{equation}
+\widehat {bias} := \bigg(1 + \Big(\frac{K-2}{K}\Big)\bigg) (\widehat {Err}^{(NCV)} - \widehat {Err}^{(CV)})
+\end{equation}`
+
+
+`\begin{equation}
+\Big(\widehat {Err}^{(NCV)} - \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}, \widehat {Err}^{(NCV)} + \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}\Big)
+\end{equation}`
+---
 class: center, middle
+
+
 
 &lt;br&gt; Merci!.. &lt;/br&gt;
 
@@ -181,7 +491,7 @@ class: center, middle
 "highlightStyle": "atelier-forest-light",
 "highlightLines": true,
 "highlightSpans": true,
-"countIncrementalSlides": false,
+"countIncrementalSlides": true,
 "ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
