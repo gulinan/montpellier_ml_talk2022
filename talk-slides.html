@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ## by Stephen Bates, Trevor Hastie, and Robert Tibshirani <br>
 ### Gül İnan <br>
 ### <br>Istanbul Technical University
-### <br><i>November 25th, 2021 </i>
+### <br><i>Machine Learning in Montpellier, Theory &amp; Practice, <br> November 25th, 2021 </i>
 
 ---
 
@@ -36,7 +36,7 @@ class: center, middle, inverse, title-slide
 &lt;br&gt;
 - In machine learning, when deploying a &lt;b&gt;&lt;span style="color:#067373;"&gt;predictive model&lt;/span&gt;&lt;/b&gt;, the interest is in understanding its &lt;b&gt;&lt;span style="color:#067373;"&gt;prediction accuracy&lt;/span&gt;&lt;/b&gt; on future test points. 
 - The standard measure of accuracy for a predictive model is the &lt;b&gt;&lt;span style="color:#067373;"&gt;prediction error&lt;/span&gt;&lt;/b&gt;, i.e., the &lt;b&gt;&lt;span style="color:#067373;"&gt;expected loss on future points&lt;/span&gt;&lt;/b&gt;.
-
+- Both &lt;b&gt;&lt;span style="color:#067373;"&gt;good point estimates&lt;/span&gt;&lt;/b&gt; and &lt;b&gt;&lt;span style="color:#067373;"&gt;accurate confidence intervals&lt;/span&gt;&lt;/b&gt; for prediction error are essential.
 ---
 
 # Aim
@@ -125,7 +125,7 @@ subsets (folds) &lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_j\)` of size `\(m=n/K\)` 
 - The &lt;b&gt;&lt;span style="color:#067373;"&gt;CV estimate of prediction error&lt;/span&gt;&lt;/b&gt; is the average of errors over K folds, given as follows:
 
 `\begin{equation}
-	\widehat {Err } ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
+	\widehat {Err} ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}`
 
 - Intuitively, the inner sum is an estimate for `\(Err_{XY}\)` for a fixed fold, and the outer sum estimates `\(Err\)` with `\(\mathcal{I}_k\)`  ( `\(k=1,\ldots,K\)` ) being different folds from the same data set.
@@ -159,7 +159,10 @@ similarly.
 ---
 # What prediction error are we estimating?
 &lt;br&gt;
-
+- `\(Err_{XY}\)` is the error of the model that was fit on the training set.
+- `\(Err\)` is the average of the fitting algorithm run on the same-sized data sets drawn
+from the underlying distribution `\(P\)`.
+- The former quantity is of the most interest to a practitioner deploying a specific mode, whereas the latter  may be of interest to a researcher comparing different fitting algorithms.
 ---
 
 &lt;img src="imgs/paper_fig2.png" width="60%" style="display: block; margin: auto;" /&gt;

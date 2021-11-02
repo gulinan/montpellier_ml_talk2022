@@ -3,7 +3,7 @@ title: "<b>Cross-validation: What does it estimate and how well does it?</b>"
 subtitle: "by Stephen Bates, Trevor Hastie, and Robert Tibshirani <br> " 
 author: "Gül İnan <br> "
 institute: " <br>Istanbul Technical University"
-date: " <br><i>November 25th, 2021 </i>"
+date: " <br><i>Machine Learning in Montpellier, Theory & Practice, <br> November 25th, 2021 </i>"
 output:
   xaringan::moon_reader:
     css: ["metropolis", "cal.css"]
@@ -31,7 +31,7 @@ library(tidyverse)
 <br>
 - In machine learning, when deploying a <b><span style="color:#067373;">predictive model</span></b>, the interest is in understanding its <b><span style="color:#067373;">prediction accuracy</span></b> on future test points. 
 - The standard measure of accuracy for a predictive model is the <b><span style="color:#067373;">prediction error</span></b>, i.e., the <b><span style="color:#067373;">expected loss on future points</span></b>.
-
+- Both <b><span style="color:#067373;">good point estimates</span></b> and <b><span style="color:#067373;">accurate confidence intervals</span></b> for prediction error are essential.
 ---
 
 # Aim
@@ -124,7 +124,7 @@ knitr::include_graphics("imgs/K_CV.png")
 - The <b><span style="color:#067373;">CV estimate of prediction error</span></b> is the average of errors over K folds, given as follows:
 
 \begin{equation}
-	\widehat {Err } ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
+	\widehat {Err} ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}
 
 - Intuitively, the inner sum is an estimate for $Err_{XY}$ for a fixed fold, and the outer sum estimates $Err$ with $\mathcal{I}_k$  ( $k=1,\ldots,K$ ) being different folds from the same data set.
@@ -158,7 +158,10 @@ similarly.
 ---
 # What prediction error are we estimating?
 <br>
-
+- $Err_{XY}$ is the error of the model that was fit on the training set.
+- $Err$ is the average of the fitting algorithm run on the same-sized data sets drawn
+from the underlying distribution $P$.
+- The former quantity is of the most interest to a practitioner deploying a specific mode, whereas the latter  may be of interest to a researcher comparing different fitting algorithms.
 ---
 
 ```{r, echo=F, out.width="60%"}
