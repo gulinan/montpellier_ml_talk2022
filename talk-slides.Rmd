@@ -112,7 +112,7 @@ Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
 <br>
 - In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we randomly partition the data into equally sized <b><span style="color:#067373;">disjoint
 folds (subsets)</span></b> $\mathcal{I}_k$ $(k=1,\ldots,K)$, where the fold size is $m=n/K$ and the whole data is $\mathcal{I} = \cup_{k=1}^{K} \mathcal{I}_k$.
-- When the data point $(x_i,y_i) \in \mathcal{I}_k$, we will also write ${i} \in \mathcal{I}_k$ $(k=1,\ldots,K)$.
+- When the data point $(x_i,y_i) \in \mathcal{I}_k$, we will also write $i \in \mathcal{I}_k$ $(k=1,\ldots,K)$.
 
 ```{r, echo=F, out.width="13%", fig.cap="<i>Partition of the data into K-folds.</i>"}
 knitr::include_graphics("imgs/K_CV_single.png")
