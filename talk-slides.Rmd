@@ -3,7 +3,7 @@ title: "<b>Cross-validation: What does it estimate and how well does it?</b>"
 subtitle: "by Stephen Bates, Trevor Hastie, and Robert Tibshirani <br> " 
 author: "Gül İnan <br> "
 institute: " <br>Istanbul Technical University"
-date: " <br><i>Machine Learning in Montpellier, Theory & Practice, <br> November 25th, 2021 </i>"
+date: " <br><i>Machine Learning in Montpellier, Theory & Practice, <br> January 6th, 2022 </i>"
 output:
   xaringan::moon_reader:
     css: ["metropolis", "cal.css"]
@@ -335,6 +335,8 @@ similarly.
 - Remember that
 $e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
 similarly.
+
+---
 - The cross-validation estimate of the prediction error is:
 
 \begin{equation}
