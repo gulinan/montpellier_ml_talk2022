@@ -26,7 +26,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.align = "center")
 library(tidyverse)
 ```
 
-
 # Motivation
 <br>
 - In machine learning applications, when deploying a <b><span style="color:#067373;">predictive model</span></b>, the interest is on understanding its <b><span style="color:#067373;">prediction accuracy</span></b> on future test points. 
