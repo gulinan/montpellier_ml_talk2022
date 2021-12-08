@@ -61,8 +61,8 @@ class: center, middle, inverse, title-slide
 # Setting and notation
 &lt;br&gt;
 - Consider a &lt;b&gt;&lt;span style="color:#067373;"&gt;supervised learning &lt;/span&gt;&lt;/b&gt; setting.  
-- We have &lt;b&gt;&lt;span style="color:#067373;"&gt;features&lt;/span&gt;&lt;/b&gt; `\(X=(X_1, \ldots X_n)  \in \mathcal{X}^{n}\)`
-and &lt;b&gt;&lt;span style="color:#067373;"&gt;responses&lt;/span&gt;&lt;/b&gt; `\(Y=(Y_1, \ldots, Y_n)  \in \mathcal{Y}^{n}\)`.
+- We have &lt;b&gt;&lt;span style="color:#067373;"&gt;feature matrix&lt;/span&gt;&lt;/b&gt; `\(X=(X_1, \ldots, X_n)  \in \mathcal{X}^{n \times p }\)`
+and &lt;b&gt;&lt;span style="color:#067373;"&gt;response vector &lt;/span&gt;&lt;/b&gt; `\(Y=(Y_1, \ldots, Y_n)  \in \mathcal{Y}^{n}\)`.
 - We assume that each &lt;b&gt;&lt;span style="color:#067373;"&gt;data point&lt;/span&gt;&lt;/b&gt; `\((X_i,Y_i)\)` for `\(i=1,\ldots,n\)`
 are i.i.d. from a &lt;b&gt;&lt;span style="color:#067373;"&gt; distribution&lt;/span&gt;&lt;/b&gt; `\(P\)`. 
 
@@ -151,7 +151,7 @@ we calculate the **prediction error** over fixed `\(\mathcal{I}_{1}\)` set as fo
 - The **average of errors over K folds** is given as follows:
 
 `\begin{equation}
-	\widehat {Err} ^{(CV)} := \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
+	\widehat {Err} ^{(CV)} := \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1)}),y_i\big).
 \end{equation}`
 
 - This is usually called as the &lt;b&gt;&lt;span style="color:#067373;"&gt;CV estimate of prediction error&lt;/span&gt;&lt;/b&gt;.
@@ -165,6 +165,13 @@ we calculate the **prediction error** over fixed `\(\mathcal{I}_{1}\)` set as fo
 - `\(Err\)` is the &lt;b&gt;&lt;span style="color:#067373;"&gt;average of the fitting algorithm run on the same-sized data sets drawn
 from the same distribution `\(P\)`.&lt;/span&gt;&lt;/b&gt;
 - The former quantity is of the most interest to a practitioner deploying a specific model, whereas the latter  may be of interest to a researcher comparing different fitting algorithms.
+
+---
+- Some studies such as Zhang (1995), Hastie et al. (2009), and Yousef (2020)
+have observed that **cross-validation estimate provides little information** about `\(Err_{XY}\)` which is also called as _weak correlation_ problem in the literature.
+- For the special case of the linear model, &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; claim that CV should be **considered as an estimate** of `\(Err\)`  rather than `\(Err_{XY}\)`.
+
+
 ---
 # `\(Err_{X}\)`:  A different target of inference
 &lt;br&gt;
@@ -180,7 +187,7 @@ y_i = x_{i}^{T} \theta + \epsilon_i \quad \text{where} \quad \epsilon_i \overset
 Err_{X} := \mathbb{E}[Err_{XY} | X],
 \end{equation}`
 
-- which &lt;b&gt;&lt;span style="color:#067373;"&gt;falls between Err&lt;/span&gt;&lt;/b&gt; and &lt;b&gt;&lt;span style="color:#067373;"&gt; `\(Err_{XY}\)`&lt;/span&gt;&lt;/b&gt; as visualized below:
+- which **falls between** `\(Err\)` and `\(Err_{XY}\)` as visualized below:
 
 &lt;br&gt;
 &lt;div class="figure" style="text-align: center"&gt;
@@ -189,27 +196,24 @@ Err_{X} := \mathbb{E}[Err_{XY} | X],
 &lt;/div&gt;
 
 ---
-
 $$ \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}$$ 
 
-- **Lemma 1:** When Ordinary Least Squares (OLS) is used as the fitting
-algorithm along with a squared-error loss, the CV estimate of prediction error, 
-`\(\widehat {Err}^{(CV)}\)` is linearly invariant.
+- **Lemma 1:** When ordinary least squares (OLS) is used as the fitting
+algorithm along with a squared-error loss function, the CV estimate of prediction error, 
+`\(\widehat {Err}^{(CV)}\)`, is linearly invariant.
 
 --
 
-- &lt;&lt; The CV estimate of prediction is the same for both the **original data** `\((y_{i})\)` and 
-**shifted data** `\((y_{i}^{'} = y_{i} + x_{i}^{T} \kappa)\)` since the residual is the same when using the `\((x_{1}, y_{1}),...,(x_{n}, y_{n})\)` or the shifted data `\((x_{1}, y_{1}^{'}),...,(x_{n}, y_{n}^{'})\)`. &gt;&gt;
+- &lt;&lt; Under this setting, residuals turns out to be the same for both **original** `\((x_{1}, y_{1}),...,(x_{n}, y_{n})\)` and **shifted data** `\((x_{1}, y_{1}^{'}),...,(x_{n}, y_{n}^{'})\)`, where `\((y_{i}^{'} = y_{i} + x_{i}^{T} \kappa)\)`. Since the CV estimate of prediction error is the mean of the squared residuals, then the CV estimate of prediction error also turns out to be **the same** for both the **original data** and the **shifted data**. &gt;&gt;
 
 ---
-&lt;br&gt;
 - **Theorem 1:** Assume homoskedastic Gaussian linear model holds and that we use
-squared-error loss. Let `\(\widehat {Err}\)` be a **linearly invariant estimate of prediction
+squared-error loss function. Let `\(\widehat {Err}\)` be a **linearly invariant estimate of prediction
 error** (such as `\(\widehat {Err}^{(CV)}\)` using OLS as the fitting algorithm). Then,
 
 `\begin{equation}
-Err_{XY} \perp \widehat {Err} \quad | \quad X.
+\widehat {Err} \perp Err_{XY} \quad | \quad X.
 \end{equation}`
 
 --
@@ -219,33 +223,20 @@ Err_{XY} \perp \widehat {Err} \quad | \quad X.
 \widehat {\theta} \perp (Y-X\widehat {\theta}) \quad | \quad X.
 \end{equation}`
 
-- Since `\(Err_{XY}\)`  is a function of only of `\(\widehat {\theta}\)`, which the OLS estimate of `\(\theta\)` based on full sample, and any linearly invariant estimate of prediction error `\(Err\)`  is a function only of residuals, `\(Y-X\widehat {\theta}\)`, by the invariance property, then `\(Err_{XY} \perp \widehat {Err} \quad | \quad X\)`. &gt;&gt;
+- Since `\(Err_{XY}\)`  is a function of `\(\widehat {\theta}\)` only, which is the OLS estimate of `\(\theta\)`, and any linearly invariant estimate of prediction error `\(Err\)` is a function only of residuals, `\(Y-X\widehat {\theta}\)`, by the invariance property, then `\(\widehat {Err} \perp Err_{XY} \quad | \quad X\)`. &gt;&gt;
 
 ---
-&lt;br&gt;
-- **Remark 1:** Suppose we have two data sets `\((X,Y)\)` and `\((X, Y^{'})\)` that share the same feature matrix `\(X\)`. Let `\(Err_{XY}\)` and `\(Err_{XY^{'}}\)` be true errors of the model fit with these two data sets, respectively. Next, suppose we perform cross-validation on `\((X,Y)\)` to get an estimate `\(Err_{XY}\)` and do the same on `\((X, Y^{'})\)` to get an estimate `\(Err_{XY^{'}}\)`. Theorem 1 implies that
+- **Corollary 1:**  Under the conditions of Theorem 1, we get the following decomposition:
 
 `\begin{equation}
-(Err_{XY}, \widehat Err_{XY}^{CV}) \overset{d}{=}  (Err_{XY}, \widehat Err_{XY^{'}}^{CV}).
+\mathbb{E}\Big[\big(\widehat Err-Err_{XY}\big)^2\Big] = \mathbb{E}\Big[\big(\widehat Err-Err_{X}\big)^2\Big] + \mathbb{E}\Big[Var\big(Err_{XY}|X\big)\Big].
 \end{equation}`
 
 --
 
-- &lt;&lt; This means that for the purpose of estimating `\(Err_{XY}\)`, we have no reason to prefer using the cross-validation estimate with
-`\((X,Y)\)` to using the cross-validation estimate with a different data set `\((X, Y^{'})\)`, even though we wish to estimate the error of the model fit on `\((X,Y)\)`. &gt;&gt;
+- &lt;&lt; Any linearly invariant estimator (such as cross-validation) has **larger mean squared error** (MSE) as an estimate of `\(Err_{XY}\)` than as an estimate of `\(Err_{X}\)`. &gt;&gt;
 
----
-- **Corollary 1:**  Under the conditions of Theorem 1,
-
-`\begin{equation}
-\mathbb{E}\Big[\big(\widehat Err-Err_{XY}\big)^2\Big] = \mathbb{E}\Big[\big(\widehat Err-Err_{X}\big)^2\Big] + \mathbb{E}\Big[\big( Err_{X}-Err_{XY}\big)^2\Big].
-\end{equation}`
-
---
-
-- &lt;&lt; Any linearly invariant estimator (such as cross-validation `\(Err^{CV}\)`) has larger mean squared error as an estimate of `\(Err_{XY}\)` than as an estimate of `\(Err_{X}\)`. &gt;&gt;
-
-- This implies that `\(\widehat Err^{CV}\)` is a better estimate of an intermediate quantity `\(Err_{X}\)` than of `\(Err_{XY}\)`.
+- This implies that `\(\widehat Err^{CV}\)` is a better estimate of the intermediate quantity `\(Err_{X}\)` than of `\(Err_{XY}\)`.
 
 ---
 # Example
@@ -255,16 +246,29 @@ and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated
 
 &lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
 
-- Left: MSE of CV point estimate of prediction relative to the estimands: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
-- Center: Coverage of `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)` by the naive cross-validation intervals, where nominal miscoverage rate is `\(10\%\)`.
-
+- Left: **MSE of CV point estimate of prediction error** relative to **three estimands**: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
+- Right: Coverage of `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)` by the naive cross-validation intervals, where nominal miscoverage rate is `\(10\%\)`.
 ---
-- We see that CV point estimate has lower MSE for `\(Err_{X}\)` than `\(Err_{XY}\)`.
-- The naive CV intervals cover `\(Err_{X}\)` more often than they cover `\(Err_{XY}\)`.
+- We see that CV point estimate has **lower MSE** for `\(Err_{X}\)` than `\(Err_{XY}\)`.
+- The naive CV intervals cover `\(Err_{X}\)` **more often** than they cover `\(Err_{XY}\)`.
 
 &lt;br&gt;
 
 &lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+- **Side note:** Each pair of points connected by a line represents the 2000 replicates with the same feature matrix `\(X\)`.
+
+
+---
+# Relationship between `\(Err\)` and `\(Err_{X}\)`
+&lt;br&gt;
+- These results suggest that, for CV point estimate of prediction error, `\(Err_{X}\)` is a more **natural target of inference** (estimand) rather than `\(Err_{XY}\)`.
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; investigate the **relationship** between `\(Err\)` and `\(Err_{X}\)`
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/paper_fig2.png" alt="&amp;lt;i&amp;gt;Possible targets of inference for cross-validation.&amp;lt;/i&amp;gt;" width="60%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Possible targets of inference for cross-validation.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 ---
 # Relationship between `\(Err\)` and `\(Err_{X}\)`
@@ -281,8 +285,10 @@ Var(Err_{XY}) &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}
 
 
 
+
+
 ---
-# Relationship between `\(Err\)` and `\(Err_{X}\)`
+
 &lt;br&gt;
 - **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors `\(X \sim N(0,\Sigma_p)\)` for any
 full-rank `\(\Sigma_p\)`. Then, for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`, we have:
