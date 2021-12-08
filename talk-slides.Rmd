@@ -261,8 +261,9 @@ knitr::include_graphics("imgs/paper_fig3.png")
 # Relationship between $Err$ and $Err_{X}$
 <br>
 - These results suggest that, for CV point estimate of prediction error, $Err_{X}$ is a more **natural target of inference** (estimand) rather than $Err_{XY}$.
-- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> investigate the **relationship** between $Err$ and $Err_{X}$
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> further investigate the **relationship** between $Err$ and $Err_{X}$.
 
+<br>
 ```{r, echo=F, out.width="60%", fig.cap="<i>Possible targets of inference for cross-validation.</i>"}
 knitr::include_graphics("imgs/paper_fig2.png")
 ```
@@ -270,25 +271,19 @@ knitr::include_graphics("imgs/paper_fig2.png")
 ---
 # Relationship between $Err$ and $Err_{X}$
 <br>
-- The conditional variance decomposition of the variance of $Err_{XY}$:
+- The variance of $Err_{XY}$ is decomposed with the **conditional variance** formula (conditioned on $X$):
 
 \begin{align}
 Var(Err_{XY}) &=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}_{X}[Err_{XY}|X]\big) \\
               &=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(Err_{X}\big),
 \end{align}
 
-- $Var\big(Err_{X}\big)$: is the variance caused by the randomness in $X$ and
-- $\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]$: is the variance caused by the randomness in $Y | X$.
-
-
-
-
+- $Var\big(Err_{X}\big)$: is the **variance caused by the randomness** in $X$ and
+- $\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]$: is the **variance caused by the randomness** in $Y | X$.
 
 ---
-
-<br>
 - **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors $X \sim N(0,\Sigma_p)$ for any
-full-rank $\Sigma_p$. Then, for $n > p$, as $n, p  \rightarrow \infty$ with $n/p \rightarrow \lambda >1$, we have:
+full-rank $\Sigma_p$ (including identity matrix). Then, for $n > p$, as $n, p  \rightarrow \infty$ with $n/p \rightarrow \lambda >1$, we have:
 
 
 \begin{align}
@@ -322,10 +317,6 @@ cor(Err_{XY}, \widehat{Err}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty
 \end{align}
 
 - This implies that $	\widehat{Err}^{(CV)}$ is asymptotically uncorrelated with $Err_{XY}$.
-
----
-- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
-then refit on the whole data set), Mallow's $C_p$ and bootstrap.
 
 ---
 # Dependence structure of CV errors
@@ -499,7 +490,8 @@ one being $D_{out}$, with indices $I_{out}$.
 
 - It is well-known that CV is also commonly used for selecting a good value of a learning algorithm's hyperparameters (fine-tuning).
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> expect that NCV would be of use for hyperparameter selection since it yields more accurate confidence intervals for prediction error.
-
+- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
+then refit on the whole data set), Mallow's $C_p$ and bootstrap.
 ---
 
 class: center, middle

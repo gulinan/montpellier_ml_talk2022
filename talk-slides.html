@@ -263,8 +263,9 @@ and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated
 # Relationship between `\(Err\)` and `\(Err_{X}\)`
 &lt;br&gt;
 - These results suggest that, for CV point estimate of prediction error, `\(Err_{X}\)` is a more **natural target of inference** (estimand) rather than `\(Err_{XY}\)`.
-- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; investigate the **relationship** between `\(Err\)` and `\(Err_{X}\)`
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; further investigate the **relationship** between `\(Err\)` and `\(Err_{X}\)`.
 
+&lt;br&gt;
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="imgs/paper_fig2.png" alt="&amp;lt;i&amp;gt;Possible targets of inference for cross-validation.&amp;lt;/i&amp;gt;" width="60%" /&gt;
 &lt;p class="caption"&gt;&lt;i&gt;Possible targets of inference for cross-validation.&lt;/i&gt;&lt;/p&gt;
@@ -273,25 +274,19 @@ and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated
 ---
 # Relationship between `\(Err\)` and `\(Err_{X}\)`
 &lt;br&gt;
-- The conditional variance decomposition of the variance of `\(Err_{XY}\)`:
+- The variance of `\(Err_{XY}\)` is decomposed with the **conditional variance** formula (conditioned on `\(X\)`):
 
 `\begin{align}
 Var(Err_{XY}) &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}_{X}[Err_{XY}|X]\big) \\
               &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(Err_{X}\big),
 \end{align}`
 
-- `\(Var\big(Err_{X}\big)\)`: is the variance caused by the randomness in `\(X\)` and
-- `\(\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]\)`: is the variance caused by the randomness in `\(Y | X\)`.
-
-
-
-
+- `\(Var\big(Err_{X}\big)\)`: is the **variance caused by the randomness** in `\(X\)` and
+- `\(\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]\)`: is the **variance caused by the randomness** in `\(Y | X\)`.
 
 ---
-
-&lt;br&gt;
 - **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors `\(X \sim N(0,\Sigma_p)\)` for any
-full-rank `\(\Sigma_p\)`. Then, for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`, we have:
+full-rank `\(\Sigma_p\)` (including identity matrix). Then, for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`, we have:
 
 
 `\begin{align}
@@ -323,10 +318,6 @@ cor(Err_{XY}, \widehat{Err}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty
 \end{align}`
 
 - This implies that `\(	\widehat{Err}^{(CV)}\)` is asymptotically uncorrelated with `\(Err_{XY}\)`.
-
----
-- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
-then refit on the whole data set), Mallow's `\(C_p\)` and bootstrap.
 
 ---
 # Dependence structure of CV errors
@@ -502,7 +493,8 @@ one being `\(D_{out}\)`, with indices `\(I_{out}\)`.
 
 - It is well-known that CV is also commonly used for selecting a good value of a learning algorithm's hyperparameters (fine-tuning).
 - &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; expect that NCV would be of use for hyperparameter selection since it yields more accurate confidence intervals for prediction error.
-
+- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
+then refit on the whole data set), Mallow's `\(C_p\)` and bootstrap.
 ---
 
 class: center, middle
