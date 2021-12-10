@@ -390,15 +390,31 @@ MSE_{K,n} := \mathbb{E}\big[ (\widehat {Err}^{(CV)} - Err_{XY})^2 \big]
 - The estimate of the MSE can be used to construct confidence intervals for `\(Err_{XY}\)` since it is what
 typically matters for practical applications.
 
----
-# Algorithm: Nested cross validaion
 
-- Split D into K folds with K-1 building `\(D_{train}\)` and the remaining
-one being `\(D_{out}\)`, with indices `\(I_{out}\)`.
+---
+- **Lemma 2:** For a single split, randomly partition the data into a training set with K-1 folds and denote it by 
+`\(\mathcal{I}_{(train)} = \cup_{k=1}^{K-1} \mathcal{I}_k=(\tilde X, \tilde Y)\)`, and call the remaining fold
+as `\(\mathcal{I}_{(out)}\)`. Using only `\((\tilde X, \tilde Y)\)`, define the prediction error `\(Err_{\tilde X, \tilde Y}\)`
+and an estimator `\(\widehat Err_{\tilde X, \tilde Y}\)` such as cross-validation, as usual. For the hold-out data set, calculate errors `\(\{e^{(out)}\}_{i \in {I}_{(out)}}\)` and their average
+`\(\bar e^{(out)}\)`. 
+
+&lt;img src="imgs/paper_fig8.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+- Then, estimate the MSE from the data as follows:
+
+`\begin{equation}
+\mathbb{E}\big[ (\widehat {Err}_{\tilde X, \tilde Y} - Err_{\tilde X, \tilde Y})^2 \big] = \mathbb{E}\big[ (\widehat {Err}_{\tilde X, \tilde Y} -\bar e^{(out)})^2 \big] - \mathbb{E}\big[ (\bar e^{(out)} - Err_{\tilde X, \tilde Y})^2 \big].
+\end{equation}`
+
+---
+# Nested cross-validation estimate of MSE
+## NCV algorithm
+- Split data into K folds with K-1 building `\(\mathcal{I}_{(train)}\)` and the remaining
+one being `\(\mathcal{I}_{(out)}\)`, with indices `\(I_{out}\)`.
 - For each split j:
-  - Compute `\(\epsilon_j := \bar{e}_{in}=\widehat {Err}_{\tilde X \tilde Y}\)` with (K-2)-fold
-  CV over K-1 folds in `\(D_{in}\)`.
-  - Train model on `\(D_{train}\)`. Compute `\(e_{i}\)` for all samples `\((x_i,y_i) \in D_{out}\)`.
+  - Compute `\(\epsilon_j := \widehat {Err}_{\tilde X \tilde Y}\)` with (K-2)-fold
+ cross-validation over K-1 folds in `\(\mathcal{I}_{(train)}\)`.
+  - Train model on `\(\mathcal{I}_{(train)}\)` and compute errors `\(e_{i}\)` for all data points `\((x_i,y_i) \in \mathcal{I}_{(out)}\)`.
   - Compute `\(\bar e_{out} := \text{mean of} \quad \{e_i\}_{e \in I_{out}}\)`
   - Set `\(a_j := (\widehat {Err}_{\tilde X \tilde Y} - \bar e_{out})^2\)` (estimate of (a)).
   - Set `\(b_j := \text{empirical variance of} \quad \{e_i\}_{e \in I_{out}}\)` (estimate of (b)).
