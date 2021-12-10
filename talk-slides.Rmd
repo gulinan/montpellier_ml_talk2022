@@ -347,9 +347,6 @@ Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{
 - where $a_1=Var(e_i)$ is the **variance of the diagonal elements**,
 - $a_2 = Cov(e_i, e_j)$ is the **covariance of the off-diagonal elements within the same fold** (in-block covariance of errors due to a common training set), and
 - $a_3 = Cov(e_i, e_j)$  is the **covariance between-blocks**, covariance due the dependence between training sets $\mathcal{I}_k$  $(k=1,\ldots,K)$.
-
-
-
 ]
 
 
@@ -392,7 +389,7 @@ typically matters for practical applications.
 
 
 ---
-- **Lemma 2:** For a single split, randomly partition the data into a training set with K-1 folds and denote it by 
+- **Lemma 2:** For a single split, randomly partition the data into a training set with $K-1$ folds and denote it by 
 $\mathcal{I}_{(train)} = \cup_{k=1}^{K-1} \mathcal{I}_k=(\tilde X, \tilde Y)$, and call the remaining fold
 as $\mathcal{I}_{(out)}$. Using only $(\tilde X, \tilde Y)$, define the prediction error $Err_{\tilde X, \tilde Y}$
 and an estimator $\widehat Err_{\tilde X, \tilde Y}$ such as cross-validation, as usual. For the hold-out data set, calculate errors $\{e^{(out)}\}_{i \in {I}_{(out)}}$ and their average
@@ -410,20 +407,25 @@ knitr::include_graphics("imgs/paper_fig8.png")
 
 ---
 # Nested cross-validation estimate of MSE
-## NCV algorithm
-- Split data into K folds with K-1 building $\mathcal{I}_{(train)}$ and the remaining
-one being $\mathcal{I}_{(out)}$, with indices $I_{out}$.
+## Nested CV algorithm
+- Split data into $K$ folds with $K-1$ building $\mathcal{I}_{(train)}$ and the remaining
+one being $\mathcal{I}_{(out)}$.
 - For each split j:
   - Compute $\epsilon_j := \widehat {Err}_{\tilde X \tilde Y}$ with (K-2)-fold
  cross-validation over K-1 folds in $\mathcal{I}_{(train)}$.
   - Train model on $\mathcal{I}_{(train)}$ and compute errors $e_{i}$ for all data points $(x_i,y_i) \in \mathcal{I}_{(out)}$.
   - Compute $\bar e_{out} := \text{mean of} \quad \{e_i\}_{e \in I_{out}}$
-  - Set $a_j := (\widehat {Err}_{\tilde X \tilde Y} - \bar e_{out})^2$ (estimate of (a)).
-  - Set $b_j := \text{empirical variance of} \quad \{e_i\}_{e \in I_{out}}$ (estimate of (b)).
+  - Set $a_j := (\widehat {Err}_{\tilde X \tilde Y} - \bar e_{out})^2$ (estimate of (the first term at RHS)).
+  - Set $b_j := \text{empirical variance of} \quad \{e_i\}_{e \in I_{out}}$ (estimate of (the second term at RHS)).
 - Output  $\widehat{MSE} = mean(a_j)-mean(b_j)$. 
 - Output $\widehat {Err}^{(NCV)} := mean(\epsilon_j)$.
- 
 
+---
+- This algorithm provides us a **point estimate** for prediction error, denoted by $\widehat {Err}^{(NCV)}$, and and **estimate for MSE**, denoted by $\widehat{MSE}$. 
+- Since the estimation is done over $K-1$ folds, the actual quantity of interest $MSE_{K,n}$ is estimated with some bias.
+- **Theorem 2:**
+
+- Note that the estimator $\widehat {Err}^{(NCV)}$ is targeting the MSE of $\widehat {Err}^{(CV)}$ as an estimate of $Err_{XY}$.
 
 ---
 # Estimation of bias
@@ -441,6 +443,9 @@ one being $\mathcal{I}_{(out)}$, with indices $I_{out}$.
 \begin{equation}
 \Big(\widehat {Err}^{(NCV)} - \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}, \widehat {Err}^{(NCV)} + \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}\Big)
 \end{equation}
+
+---
+# Simulation Experiments
 
 ---
 # Future work
