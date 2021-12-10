@@ -243,26 +243,21 @@ error** (such as `\(\widehat {Err}^{(CV)}\)` using OLS as the fitting algorithm)
 &lt;br&gt;
 - Consider an experiment in a simple linear model with `\(n=100\)` observations
 and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated `\(n=2000\)` times with the same feature matrix `\(X\)`.
+- **MSE** of `\(\widehat {Err} ^{(CV)}\)` relative to **three estimands**: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
 
-&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-- Left: **MSE of CV point estimate of prediction error** relative to **three estimands**: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
-- Right: Coverage of `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)` by the naive cross-validation intervals, where nominal miscoverage rate is `\(10\%\)`.
----
-- We see that CV point estimate has **lower MSE** for `\(Err_{X}\)` than `\(Err_{XY}\)`.
-- The naive CV intervals cover `\(Err_{X}\)` **more often** than they cover `\(Err_{XY}\)`.
-
-&lt;br&gt;
-
-&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="imgs/paper_fig3a.png" width="30%" style="display: block; margin: auto;" /&gt;
 
 - **Side note:** Each pair of points connected by a line represents the 2000 replicates with the same feature matrix `\(X\)`.
+---
+- We see that `\(\widehat {Err} ^{(CV)}\)` has **lower MSE** for `\(Err_{X}\)` than `\(Err_{XY}\)`.
+- These results suggest that, `\(Err_{X}\)` is a more **natural target of inference** (estimand) rather than `\(Err_{XY}\)` for `\(\widehat {Err} ^{(CV)}\)`.
 
+&lt;br&gt;
+&lt;img src="imgs/paper_fig3a.png" width="30%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Relationship between `\(Err\)` and `\(Err_{X}\)`
 &lt;br&gt;
-- These results suggest that, for CV point estimate of prediction error, `\(Err_{X}\)` is a more **natural target of inference** (estimand) rather than `\(Err_{XY}\)`.
 - &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; further investigate the **relationship** between `\(Err\)` and `\(Err_{X}\)`.
 
 &lt;br&gt;
@@ -271,56 +266,31 @@ and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated
 &lt;p class="caption"&gt;&lt;i&gt;Possible targets of inference for cross-validation.&lt;/i&gt;&lt;/p&gt;
 &lt;/div&gt;
 
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; show that the variance of `\(Err_{X}\)` (which also has mean `\(Err\)`) is **small** compared with the variance of `\(Err_{XY}\)` (which also has mean `\(Err\)`), showing that `\(Err_{X}\)` is **close** to `\(Err\)`.
 ---
-# Relationship between `\(Err\)` and `\(Err_{X}\)`
+- Note that in the example, MSE of `\(\widehat {Err} ^{(CV)}\)` is **similar** when estimating either `\(Err\)` or `\(Err_{X}\)`, but **significantly different** when estimating `\(Err_{XY}\)`.
+
+&lt;img src="imgs/paper_fig3a.png" width="30%" style="display: block; margin: auto;" /&gt;
+
+---
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; show that `\(	\widehat {Err} ^{(CV)}\)`
+is **closer** to `\(Err\)` and `\(Err_{X}\)` than to `\(Err_{XY}\)` in the proportional asymptotic limit (for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`).
+- Combined with the earlier results, this implies that `\(	\widehat {Err} ^{(CV)}\)` is a **better estimator** for `\(Err\)` than for `\(Err_{XY}\)`.
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; also show that `\(	\widehat{Err}^{(CV)}\)` is **asymptotically uncorrelated** with `\(Err_{XY}\)`.
+
+---
+# Example re-visited
 &lt;br&gt;
-- The variance of `\(Err_{XY}\)` is decomposed with the **conditional variance** formula (conditioned on `\(X\)`):
+- The &lt;b&gt;&lt;span style="color:#067373;"&gt;naive CV intervals&lt;/span&gt;&lt;/b&gt; for **three estimands**: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)` are built and miscoverage rates are estimated.
+- The naive CV intervals **fail** due to larger miscoverage rates (or small confidence intervals).
 
-`\begin{align}
-Var(Err_{XY}) &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}_{X}[Err_{XY}|X]\big) \\
-              &amp;=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(Err_{X}\big),
-\end{align}`
+&lt;img src="imgs/paper_fig3b.png" width="30%" style="display: block; margin: auto;" /&gt;
 
-- `\(Var\big(Err_{X}\big)\)`: is the **variance caused by the randomness** in `\(X\)` and
-- `\(\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]\)`: is the **variance caused by the randomness** in `\(Y | X\)`.
-
----
-- **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors `\(X \sim N(0,\Sigma_p)\)` for any
-full-rank `\(\Sigma_p\)` (including identity matrix). Then, for `\(n &gt; p\)`, as `\(n, p  \rightarrow \infty\)` with `\(n/p \rightarrow \lambda &gt;1\)`, we have:
-
-
-`\begin{align}
-\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] = \Theta(1/n) \quad \text{and} \\
-Var\big(Err_{X}\big) = \mathbb{E}(Err_{X}-Err)^2 = \Theta(1/n^2).
-\end{align}`
-
-- We see that the randomness caused by `\(Y\)` given `\(X\)` is of larger order than that due the randomness in `\(X\)`.
----
-- The variance of `\(Err_{X}\)` (which also has mean `\(Err\)`) is small compared with the variance of `\(Err_{XY}\)` (which also has mean `\(Err\)`), showing that `\(Err_{X}\)` is close to `\(Err\)`.
-- Note that MSE and coverage of cross-validation is similar when estimating either `\(Err\)` or `\(Err_{X}\)`, but significantly different when estimating `\(Err_{XY}\)`.
-
-&lt;img src="imgs/paper_fig3.png" width="60%" style="display: block; margin: auto;" /&gt;
-
----
-- In the proportional asymptotic limit, implies that `\(	\widehat {Err} ^{(CV)}\)`
-is closer to `\(Err\)` and `\(Err_{X}\)` than to `\(Err_{XY}\)`.
-
-- **Corollary 2:** In the setting of Theorem 2,
-
-`\begin{align}
-cor(Err_{XY}, Err_{X}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
-\end{align}`
-
-- Moreover, for any linearly invariant estimator `\(\widehat {Err}\)` (such as `\(	\widehat {Err} ^{(CV)}\)` using OLS as the fitting algorithm), 
-
-`\begin{align}
-cor(Err_{XY}, \widehat{Err}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
-\end{align}`
-
-- This implies that `\(	\widehat{Err}^{(CV)}\)` is asymptotically uncorrelated with `\(Err_{XY}\)`.
+- **Side note:** The nominal miscoverage rate is `\(10\%\)`.
 
 ---
 # Dependence structure of CV errors
+&lt;br&gt;
 - Let 
 `\(e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)\)` for each `\(i \in \mathcal{I}_k\)` ( `\(k=1,\ldots,K\)` ), and the errors `\(e_i\)` for points in other folds are defined
 similarly.

@@ -237,30 +237,25 @@ error** (such as $\widehat {Err}^{(CV)}$ using OLS as the fitting algorithm). Th
 <br>
 - Consider an experiment in a simple linear model with $n=100$ observations
 and $p=20$ features $\overset{i.i.d.}{\sim} N(0,1)$, which is replicated $n=2000$ times with the same feature matrix $X$.
+- **MSE** of $\widehat {Err} ^{(CV)}$ relative to **three estimands**: $Err$, $Err_{X}$, and $Err_{XY}$.
 
-```{r, echo=F, out.width="60%"}
-knitr::include_graphics("imgs/paper_fig3.png")
-```
-
-- Left: **MSE of CV point estimate of prediction error** relative to **three estimands**: $Err$, $Err_{X}$, and $Err_{XY}$.
-- Right: Coverage of $Err$, $Err_{X}$, and $Err_{XY}$ by the naive cross-validation intervals, where nominal miscoverage rate is $10\%$.
----
-- We see that CV point estimate has **lower MSE** for $Err_{X}$ than $Err_{XY}$.
-- The naive CV intervals cover $Err_{X}$ **more often** than they cover $Err_{XY}$.
-
-<br>
-
-```{r, echo=F, out.width="60%"}
-knitr::include_graphics("imgs/paper_fig3.png")
+```{r, echo=F, out.width="30%"}
+knitr::include_graphics("imgs/paper_fig3a.png")
 ```
 
 - **Side note:** Each pair of points connected by a line represents the 2000 replicates with the same feature matrix $X$.
+---
+- We see that $\widehat {Err} ^{(CV)}$ has **lower MSE** for $Err_{X}$ than $Err_{XY}$.
+- These results suggest that, $Err_{X}$ is a more **natural target of inference** (estimand) rather than $Err_{XY}$ for $\widehat {Err} ^{(CV)}$.
 
+<br>
+```{r, echo=F, out.width="30%"}
+knitr::include_graphics("imgs/paper_fig3a.png")
+```
 
 ---
 # Relationship between $Err$ and $Err_{X}$
 <br>
-- These results suggest that, for CV point estimate of prediction error, $Err_{X}$ is a more **natural target of inference** (estimand) rather than $Err_{XY}$.
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> further investigate the **relationship** between $Err$ and $Err_{X}$.
 
 <br>
@@ -268,58 +263,35 @@ knitr::include_graphics("imgs/paper_fig3.png")
 knitr::include_graphics("imgs/paper_fig2.png")
 ```
 
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> show that the variance of $Err_{X}$ (which also has mean $Err$) is **small** compared with the variance of $Err_{XY}$ (which also has mean $Err$), showing that $Err_{X}$ is **close** to $Err$.
 ---
-# Relationship between $Err$ and $Err_{X}$
-<br>
-- The variance of $Err_{XY}$ is decomposed with the **conditional variance** formula (conditioned on $X$):
+- Note that in the example, MSE of $\widehat {Err} ^{(CV)}$ is **similar** when estimating either $Err$ or $Err_{X}$, but **significantly different** when estimating $Err_{XY}$.
 
-\begin{align}
-Var(Err_{XY}) &=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(\mathbb{E}_{X}[Err_{XY}|X]\big) \\
-              &=\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] + Var\big(Err_{X}\big),
-\end{align}
-
-- $Var\big(Err_{X}\big)$: is the **variance caused by the randomness** in $X$ and
-- $\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big]$: is the **variance caused by the randomness** in $Y | X$.
-
----
-- **Theorem 2:** Suppose the homeskedastic Gaussian linear model holds and that we use a squared-error loss. In addition, assume that feature vectors $X \sim N(0,\Sigma_p)$ for any
-full-rank $\Sigma_p$ (including identity matrix). Then, for $n > p$, as $n, p  \rightarrow \infty$ with $n/p \rightarrow \lambda >1$, we have:
-
-
-\begin{align}
-\mathbb{E}_{X}\big[Var(Err_{XY}|X)\big] = \Theta(1/n) \quad \text{and} \\
-Var\big(Err_{X}\big) = \mathbb{E}(Err_{X}-Err)^2 = \Theta(1/n^2).
-\end{align}
-
-- We see that the randomness caused by $Y$ given $X$ is of larger order than that due the randomness in $X$.
----
-- The variance of $Err_{X}$ (which also has mean $Err$) is small compared with the variance of $Err_{XY}$ (which also has mean $Err$), showing that $Err_{X}$ is close to $Err$.
-- Note that MSE and coverage of cross-validation is similar when estimating either $Err$ or $Err_{X}$, but significantly different when estimating $Err_{XY}$.
-
-```{r, echo=F, out.width="60%"}
-knitr::include_graphics("imgs/paper_fig3.png")
+```{r, echo=F, out.width="30%"}
+knitr::include_graphics("imgs/paper_fig3a.png")
 ```
 
 ---
-- In the proportional asymptotic limit, implies that $	\widehat {Err} ^{(CV)}$
-is closer to $Err$ and $Err_{X}$ than to $Err_{XY}$.
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> show that $	\widehat {Err} ^{(CV)}$
+is **closer** to $Err$ and $Err_{X}$ than to $Err_{XY}$ in the proportional asymptotic limit (for $n > p$, as $n, p  \rightarrow \infty$ with $n/p \rightarrow \lambda >1$).
+- Combined with the earlier results, this implies that $	\widehat {Err} ^{(CV)}$ is a **better estimator** for $Err$ than for $Err_{XY}$.
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> also show that $	\widehat{Err}^{(CV)}$ is **asymptotically uncorrelated** with $Err_{XY}$.
 
-- **Corollary 2:** In the setting of Theorem 2,
+---
+# Example re-visited
+<br>
+- The <b><span style="color:#067373;">naive CV intervals</span></b> for **three estimands**: $Err$, $Err_{X}$, and $Err_{XY}$ are built and miscoverage rates are estimated.
+- The naive CV intervals **fail** due to larger miscoverage rates (or small confidence intervals).
 
-\begin{align}
-cor(Err_{XY}, Err_{X}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
-\end{align}
+```{r, echo=F, out.width="30%"}
+knitr::include_graphics("imgs/paper_fig3b.png")
+```
 
-- Moreover, for any linearly invariant estimator $\widehat {Err}$ (such as $	\widehat {Err} ^{(CV)}$ using OLS as the fitting algorithm), 
-
-\begin{align}
-cor(Err_{XY}, \widehat{Err}) \rightarrow 0, \quad \text{n, p} \rightarrow \infty.
-\end{align}
-
-- This implies that $	\widehat{Err}^{(CV)}$ is asymptotically uncorrelated with $Err_{XY}$.
+- **Side note:** The nominal miscoverage rate is $10\%$.
 
 ---
 # Dependence structure of CV errors
+<br>
 - Let 
 $e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
 similarly.
