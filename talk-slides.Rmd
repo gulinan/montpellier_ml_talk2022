@@ -256,7 +256,7 @@ knitr::include_graphics("imgs/paper_fig3a.png")
 ---
 # Relationship between $Err$ and $Err_{X}$
 <br>
-- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> further investigate the **relationship** between $Err$ and $Err_{X}$.
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> further investigate the **relationship** between $Err$ and $Err_{X}$ through asymptotic analysis.
 
 <br>
 ```{r, echo=F, out.width="60%", fig.cap="<i>Possible targets of inference for cross-validation.</i>"}
@@ -276,48 +276,27 @@ knitr::include_graphics("imgs/paper_fig3a.png")
 is **closer** to $Err$ and $Err_{X}$ than to $Err_{XY}$ in the proportional asymptotic limit (for $n > p$, as $n, p  \rightarrow \infty$ with $n/p \rightarrow \lambda >1$).
 - Combined with the earlier results, this implies that $	\widehat {Err} ^{(CV)}$ is a **better estimator** for $Err$ than for $Err_{XY}$.
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> also show that $	\widehat{Err}^{(CV)}$ is **asymptotically uncorrelated** with $Err_{XY}$.
-
----
-# Example re-visited
-<br>
-- The <b><span style="color:#067373;">naive CV intervals</span></b> for **three estimands**: $Err$, $Err_{X}$, and $Err_{XY}$ are built and miscoverage rates are estimated.
-- The naive CV intervals **fail** due to larger miscoverage rates (or small confidence intervals).
-
-```{r, echo=F, out.width="30%"}
-knitr::include_graphics("imgs/paper_fig3b.png")
-```
-
-- **Side note:** The nominal miscoverage rate is $10\%$.
-
 ---
 # Dependence structure of CV errors
 <br>
 - Let 
-$e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
-similarly.
-- Since $n =  K \times m$,  we can **re-define** <b><span style="color:#067373;">CV estimate of prediction error</span></b> as follows:
+$e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ be the **error** for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$), resulting _m_ different $e_i$'s for each $\mathcal{I}_k$.
+- Then, we can **re-define** <b><span style="color:#067373;">CV point estimate of prediction error</span></b> as the **average of errors** as follows:
 
 \begin{equation}
-	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
+	\widehat {Err } ^{(CV)}:= \frac{1} {K} \sum_{k=1}^{K}    \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1)}),y_i\big)
+	= \frac{1} {n}  \sum_{i=1}^{n}e_i 
+	= \bar e, 
 \end{equation}
 
-- Remember that
-$e_i =\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big)$ for each $i \in \mathcal{I}_k$ ( $k=1,\ldots,K$ ), and the errors $e_i$ for points in other folds are defined
-similarly.
-
+- where $n =  K \times m$.
 ---
-- The cross-validation estimate of the prediction error is:
-
-\begin{equation}
-	\widehat {Err } ^{(CV)}:= 	\bar e = \frac{1} {n}  \sum_{i=1}^{n}e_i. \nonumber
-\end{equation}
-
-- Assuming that $e_i$'s are i.i.d., an <b><span style="color:#067373;">estimate of the standard error of the prediction error</span></b> would be:
+- Assuming that $e_i$'s are i.i.d., then <b><span style="color:#067373;">estimate of the standard error of CV point estimate of prediction error</span></b> would be:
 
 \begin{equation}
 	\widehat{se}^{(CV)}:=\frac{1} {\sqrt n} \times \sqrt {\frac{1} {n-1} \sum_{i=1}^{n}(e_i-\bar e)^2},  \nonumber
 \end{equation}
-- where the second term in the multiplication refers to the  <b><span style="color:#067373;">empirical standard deviation of the $e_i$</span></b>. 
+- where the second term in the multiplication refers to the  <b><span style="color:#067373;">empirical standard deviation</span></b> of the $e_i$. 
 
 ---
 # A $100(1-\alpha)\%$ confidence interval for prediction error
@@ -325,41 +304,27 @@ similarly.
 - A $100(1-\alpha)\%$ <b><span style="color:#067373;">confidence interval for prediction error</span></b> can be constructed as follows:
 
 \begin{equation}
-\Big(\widehat {Err}^{(CV)} - z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \quad, \quad \widehat {Err}^{(CV)} + z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \Big)
+\Big(\widehat {Err}^{(CV)} - z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \quad, \quad \widehat {Err}^{(CV)} + z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \Big),
 \end{equation}
 
 - where $z_{1- (\frac{\alpha}{2}) }$ is the $1- (\frac{\alpha}{2})$ quantile of the standard normal distribution. 
 - The intervals are called as <b><span style="color:#067373;">naive cross-validation intervals</span></b>.
 
-- However, since every data point is used in both in training and testing, we cannot accept that are $e_i$'s are independent of each other. 
+- However, since every data point is used in both in training and testing, we **cannot accept** that are $e_i$'s are **independent** of each other. 
 
-- As K approaches to n, correlations between $e_i$'s would increase, and hence would results in higher variance.
-
-- Any confidence interval built using will be too small and have poor coverage.
+- Any **confidence interval** built on it would have **poor coverage**.
 
 ---
-# Example
-
-- Consider a sparse logistic model:
-
-\begin{align}
-Pr(Y_i = 1 | X_i = x_i) = \frac{1}{1 + exp(-x_{i}^{T}\theta)}, \quad \text{i=1,...,n},
-\end{align}
-
-- where $n=90$ observations of $p=1000$ features, and a coefficient 
-$\theta = c \times (1,1,1,1,0,0,...)^{T} \in \mathcal{R}^{p}$ and $c$ is chosen such that misclassification rate is $20 \%$.
-
-- We estimate the parameters using $\ell_1-$ penalized logistic regression with a fixed
-penalty level.
-
----
+# Example re-visited
 <br>
-- In this case, naive confidence intervals for prediction error are far too small: intervals with desired miscoverage of $10\%$ give $31\%$ miscoverage in our simulation.
+- The <b><span style="color:#067373;">naive cross-validation intervals</span></b> for **three estimands**: $Err$, $Err_{X}$, and $Err_{XY}$ are built and miscoverage rates are estimated.
 
-```{r, echo=F, out.width="45%", fig.cap="<i>Structure of the covariance matrix of errrors.</i>"}
-knitr::include_graphics("imgs/logistic_cv.png")
+```{r, echo=F, out.width="30%"}
+knitr::include_graphics("imgs/paper_fig3b.png")
 ```
 
+- The naive CV intervals **fail** due to larger miscoverage rates. 
+- **Side note:** The nominal miscoverage rate is $10\%$.
 ---
 ```{css echo=FALSE}
 .pull-left {
@@ -373,15 +338,15 @@ knitr::include_graphics("imgs/logistic_cv.png")
 ```
 
 .pull-left[
-- The fundamental paper of Bengio and Grandvalet (2004) gives the key structure of the covariance matrix of $e_i$'s such that:
+- The fundamental paper of <b><span style="color:#067373;">Bengio and Grandvalet (2004)</span></b> gives the key structure of the covariance matrix of $e_i$'s such that:
 
 \begin{equation}
 Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{n}a_3,
 \end{equation}
 
-- where $a_1=Var(e_i)$ is the variance of the diagonal elements,
-- $a_2 = Cov(e_i, e_j)$ is the covariance of the off-diagonal elements within the same fold (in-block covariance of errors due to a common training set), and
-- $a_3 = Cov(e_i, e_j)$  is the covariance between-blocks covariance due the dependence between training sets $\mathcal{I}_k$  $(k=1,\ldots,K)$.
+- where $a_1=Var(e_i)$ is the **variance of the diagonal elements**,
+- $a_2 = Cov(e_i, e_j)$ is the **covariance of the off-diagonal elements within the same fold** (in-block covariance of errors due to a common training set), and
+- $a_3 = Cov(e_i, e_j)$  is the **covariance between-blocks**, covariance due the dependence between training sets $\mathcal{I}_k$  $(k=1,\ldots,K)$.
 
 
 
@@ -389,7 +354,7 @@ Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{
 
 
 .pull-right[
-```{r, echo=F, out.width="70%", fig.cap="<i>Structure of the covariance matrix of errrors.</i>"}
+```{r, echo=F, out.width="60%", fig.cap="<i>Structure of the covariance matrix of errrors.</i>"}
 knitr::include_graphics("imgs/covariance_structure.png")
 ```
 
@@ -403,11 +368,15 @@ knitr::include_graphics("imgs/covariance_structure.png")
 Var(\widehat {Err}^{(CV)}) > \frac{1}{n}a_1,
 \end{equation}
 
-- so estimating the variance of $\widehat{Err}^{(CV)}$ as $\widehat{se}^2$ results in an estimate that it is too small, and, in turn, poor coverage.
+- The naive cross-validation intervals **implicitly assume** $a_2=0$ and $a_3=0$. 
+- Hence estimating the variance of $\widehat{Err}^{(CV)}$ as $\widehat{se}^2$ results in an estimate that it is too **small**, and, in turn, **poor coverage**.
 
 
 ---
-# Target of inference
+# Target of inference: Confidence intervals for $Err_{XY}$
+<br>
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b>
+develops an **estimator** that **empirically estimate the variance** of $\widehat{Err}^{(CV)}$ across many subsamples and use it to construct confidence intervals for $Err_{XY}$ which are often of the **most interest to the analysts**.
 
 - **Definition 2:** For a sample of size n split into K folds, the cross-validation MSE is:
 
@@ -415,13 +384,11 @@ Var(\widehat {Err}^{(CV)}) > \frac{1}{n}a_1,
 MSE_{K,n} := \mathbb{E}\big[ (\widehat {Err}^{(CV)} - Err_{XY})^2 \big]
 \end{equation}
 
-- Due to technical reasons, MSE is defined with respect to  $Err_{XY}$
-- MSE contains both a bias term and variance term, but the bias typically
-small for cross-validation [Efron, 1983; Efron and Gong, 1983; Efron and Tibshirani, 1997].
-- We can view the MSE as a slightly conservative version of the variance of the cross-validation estimator, i.e., the squared standard error.
-- We will use an estimate of the MSE to construct confidence intervals for $Err_{XY}$ since it is what
+- MSE contains both a **bias term** and **variance term**, but the **bias** typically
+**small** for cross-validation (Efron, 1983; Efron and Gong, 1983; Efron and Tibshirani, 1997).
+- **MSE** can be viewed as a slightly conservative version of the **variance** of the cross-validation estimator.
+- The estimate of the MSE can be used to construct confidence intervals for $Err_{XY}$ since it is what
 typically matters for practical applications.
-- With this in mind, we will use an estimate of the MSE to construct confidence intervals for $Err_{XY}$. 
 
 ---
 # Algorithm: Nested cross validaion
