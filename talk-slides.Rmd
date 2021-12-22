@@ -458,6 +458,31 @@ knitr::include_graphics("imgs/paper_fig8.png")
  \end{equation}
 ---
 # Simulation Experiments
+<br>
+- The **coverage** of nested CV approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
+- Consider a **sparse logistic data generating model**:
+
+\begin{align}
+Pr(Y_i = 1 | X_i = x_i) = \frac{1}{1 + \exp(-x_{i}^{T}\theta)}, \quad \text{i=1,...,n},
+\end{align}
+
+- where $n$ is the number of observations, $p$ is the number of features, 
+- $X_i$ is the feature matrix consisting of i.i.d standard Gaussian variables,  
+- the coefficient 
+$\theta = c \times (1,1,1,1,0,0,...)^{T} \in \mathcal{R}^{p}$ and 
+- $c$ is chosen such that Bayes error is either $33.2\%$ or $22.5\%$ which is the **optimal lower bound** for $Err$.
+
+---
+- For low dimensional setting where $n=100$ and $p=20$,
+
+
+---
+- For high dimensional setting where $n={90,200}$ and $p=100$,
+---
+- We estimate the parameters using $\ell_1-$ penalized logistic regression with a fixed
+penalty level. random split 200.
+
+
 
 ---
 # Future work
