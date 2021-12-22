@@ -378,7 +378,7 @@ develops an **estimator** that **empirically estimate the variance** of $\wideha
 - **Definition 2:** For a sample of size n split into K folds, the cross-validation MSE is:
 
 \begin{equation}
-MSE_{K,n} := \mathbb{E}\big[ (\widehat {Err}^{(CV)} - Err_{XY})^2 \big]
+MSE_{K,n} := \mathbb{E}\big[ (\widehat {Err}^{(CV)} - Err_{XY})^2 \big].
 \end{equation}
 
 - MSE contains both a **bias term** and **variance term**, but the **bias** typically
@@ -395,55 +395,67 @@ as $\mathcal{I}_{(out)}$. Using only $(\tilde X, \tilde Y)$, define the predicti
 and an estimator $\widehat Err_{\tilde X, \tilde Y}$ such as cross-validation, as usual. For the hold-out data set, calculate errors $\{e^{(out)}\}_{i \in {I}_{(out)}}$ and their average
 $\bar e^{(out)}$. 
 
-```{r, echo=F, out.width="60%"}
-knitr::include_graphics("imgs/paper_fig8.png")
-```
-
 - Then, estimate the MSE from the data as follows:
 
 \begin{equation}
 \mathbb{E}\big[ (\widehat {Err}_{\tilde X, \tilde Y} - Err_{\tilde X, \tilde Y})^2 \big] = \mathbb{E}\big[ (\widehat {Err}_{\tilde X, \tilde Y} -\bar e^{(out)})^2 \big] - \mathbb{E}\big[ (\bar e^{(out)} - Err_{\tilde X, \tilde Y})^2 \big].
 \end{equation}
 
+```{r, echo=F, out.width="60%"}
+knitr::include_graphics("imgs/paper_fig8.png")
+```
+
+
+
 ---
 # Nested cross-validation estimate of MSE
-## Nested CV algorithm
-- Split data into $K$ folds with $K-1$ building $\mathcal{I}_{(train)}$ and the remaining
+#### Nested CV algorithm
+- **Repeatedly** split data into $K$ folds with $K-1$ building $\mathcal{I}_{(train)}$ and the remaining
 one being $\mathcal{I}_{(out)}$.
 - For each split j:
   - Compute $\epsilon_j := \widehat {Err}_{\tilde X \tilde Y}$ with (K-2)-fold
  cross-validation over K-1 folds in $\mathcal{I}_{(train)}$.
   - Train model on $\mathcal{I}_{(train)}$ and compute errors $e_{i}$ for all data points $(x_i,y_i) \in \mathcal{I}_{(out)}$.
-  - Compute $\bar e_{out} := \text{mean of} \quad \{e_i\}_{e \in I_{out}}$
+  - Compute $\bar e_{out} := \text{mean of} \quad \{i\}_{e \in I_{out}}$.
   - Set $a_j := (\widehat {Err}_{\tilde X \tilde Y} - \bar e_{out})^2$ (estimate of (the first term at RHS)).
-  - Set $b_j := \text{empirical variance of} \quad \{e_i\}_{e \in I_{out}}$ (estimate of (the second term at RHS)).
+  - Set $b_j := \text{empirical variance of} \quad \{e_i\}_{i \in I_{out}}$ (estimate of (the second term at RHS)).
 - Output  $\widehat{MSE} = mean(a_j)-mean(b_j)$. 
 - Output $\widehat {Err}^{(NCV)} := mean(\epsilon_j)$.
 
----
-- This algorithm provides us a **point estimate** for prediction error, denoted by $\widehat {Err}^{(NCV)}$, and and **estimate for MSE**, denoted by $\widehat{MSE}$. 
-- Since the estimation is done over $K-1$ folds, the actual quantity of interest $MSE_{K,n}$ is estimated with some bias.
-- **Theorem 2:**
-
-- Note that the estimator $\widehat {Err}^{(NCV)}$ is targeting the MSE of $\widehat {Err}^{(CV)}$ as an estimate of $Err_{XY}$.
+```{r, echo=F, out.width="40%"}
+knitr::include_graphics("imgs/paper_fig8.png")
+```
 
 ---
-# Estimation of bias
+- This algorithm provides us a **point estimate** for prediction error, denoted by $\widehat {Err}^{(NCV)}$, and **estimate for MSE**, denoted by $\widehat{MSE}$. 
+
+- **Theorem 2:** For a nested CV with a sample of size $n$:
 
 \begin{equation}
-\widehat {Err}^{(NCV)} - \widehat {Err}^{(CV)}
+\mathbb{E}\big[ \widehat{MSE} \big] :=  MSE_{K-1,((K-1)n/K)}, 
 \end{equation}
 
+- where $n/K$ is the fold size.
+- Since the estimation is done over $K-1$ folds, $\widehat{MSE}$ estimates the actual quantity of interest $MSE_{K,n}$ with some **bias**.
+- $\widehat{MSE}$ is **rescaled** to obtained unbiased estimate for $MSE_{K,n}$.
+- Similarly, $\widehat {Err}^{(NCV)}$ is also adjusted (**de-biased**).
+
+---
+# A $100(1-\alpha)\%$ confidence interval
+<br>
+
+- Finally, a $100(1-\alpha)\%$ confidence interval is obtained as follows:
 
 \begin{equation}
-\widehat {bias} := \bigg(1 + \Big(\frac{K-2}{K}\Big)\bigg) (\widehat {Err}^{(NCV)} - \widehat {Err}^{(CV)})
+\Big(\widehat {Err}^{(NCV)} - \widehat {bias}- z_{1-(\frac{\alpha}{2})} \widehat{se}^{(NCV)}, \quad \widehat {Err}^{(NCV)} + \widehat {bias}- z_{1-(\frac{\alpha}{2})} \widehat{se}^{(NCV)}\Big), 
 \end{equation}
 
+- where
 
-\begin{equation}
-\Big(\widehat {Err}^{(NCV)} - \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}, \widehat {Err}^{(NCV)} + \widehat {bias}- z_{1-(\frac{\alpha}{2})} \sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}\Big)
-\end{equation}
-
+- \begin{equation}
+ \widehat {bias} := \Big(1 + \big(\frac{K-2}{K}\big)\Big) (\widehat {Err}^{(NCV)} - \widehat {Err}^{(CV)}) \quad \text{and}  \quad
+ \widehat{se}^{(NCV)} :=\sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}.
+ \end{equation}
 ---
 # Simulation Experiments
 
