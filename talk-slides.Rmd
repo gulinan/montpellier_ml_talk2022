@@ -485,7 +485,7 @@ the **nominal miscoverage** rate is $10\%$.
 # Simulation results: Low-dimensional setting results
 <br>
 - $n=100$, $p=20$, and (un-regularized) logistic regression is used as fitting algorithm.
-- Nested CV gives **coverage more closer** to the nominal level.
+- Nested CV gives **coverage closer** to the nominal level.
 
 ```{r, echo=F, out.width="100%"}
 knitr::include_graphics("imgs/result1.png")
@@ -505,12 +505,12 @@ knitr::include_graphics("imgs/result2.png")
 ```
 
 ---
-# Future work
-
+# Discussion & Future work
+<br>
+- Nested CV is more **computationally intensive** than standard CV, but, parallel programming can be used for speeding up the algorithm.
 - It is well-known that CV is also commonly used for selecting a good value of a learning algorithm's hyperparameters (fine-tuning).
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> expect that NCV would be of use for hyperparameter selection since it yields more accurate confidence intervals for prediction error.
-- A note: The theory developed in Sections 2 and 3 of the paper applies not only to CV but to other methods as well: data-splitting with refitting (train on one half of the data, evaluate on the other,
-then refit on the whole data set), Mallow's $C_p$ and bootstrap.
+
 ---
 
 class: center, middle
