@@ -406,8 +406,8 @@ and an estimator `\(\widehat Err_{\tilde X, \tilde Y}\)` such as cross-validatio
 
 
 ---
-# Nested cross-validation estimate of MSE
-#### Nested CV algorithm
+# Nested cross-validation (CV) estimate of MSE
+#### &lt;b&gt;&lt;span style="color:#067373;"&gt;Nested CV algorithm&lt;/span&gt;&lt;/b&gt;
 - **Repeatedly** split data into `\(K\)` folds with `\(K-1\)` building `\(\mathcal{I}_{(train)}\)` and the remaining
 one being `\(\mathcal{I}_{(out)}\)`.
 - For each split j:
@@ -423,7 +423,7 @@ one being `\(\mathcal{I}_{(out)}\)`.
 &lt;img src="imgs/paper_fig8.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ---
-- This algorithm provides us a **point estimate** for prediction error, denoted by `\(\widehat {Err}^{(NCV)}\)`, and **estimate for MSE**, denoted by `\(\widehat{MSE}\)`. 
+- Nested CV algorithm provides us a **point estimate** for prediction error, denoted by `\(\widehat {Err}^{(NCV)}\)`, and **estimate for MSE**, denoted by `\(\widehat{MSE}\)`. 
 
 - **Theorem 2:** For a nested CV with a sample of size `\(n\)`:
 
@@ -453,7 +453,7 @@ one being `\(\mathcal{I}_{(out)}\)`.
  \widehat{se}^{(NCV)} :=\sqrt{\frac{K-1}{K}}\sqrt{\widehat {MSE}}.
  \end{equation}
 ---
-# Simulation Experiments
+# Simulation experiments: Data generation scenario
 &lt;br&gt;
 - The **coverage** of nested CV approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
 - Consider a **sparse logistic data generating model**:
@@ -466,19 +466,35 @@ Pr(Y_i = 1 | X_i = x_i) = \frac{1}{1 + \exp(-x_{i}^{T}\theta)}, \quad \text{i=1,
 - `\(X_i\)` is the feature matrix consisting of i.i.d standard Gaussian variables,  
 - the coefficient 
 `\(\theta = c \times (1,1,1,1,0,0,...)^{T} \in \mathcal{R}^{p}\)` and 
-- `\(c\)` is chosen such that Bayes error is either `\(33.2\%\)` or `\(22.5\%\)` which is the **optimal lower bound** for `\(Err\)`.
+- `\(c\)` is chosen such that &lt;b&gt;&lt;span style="color:#067373;"&gt;Bayes error&lt;/span&gt;&lt;/b&gt; is either `\(33.2\%\)` or `\(22.5\%\)` which is the **optimal lower bound** for `\(Err\)`.
+---
+# Simulation experiments: Performance metrics
+&lt;br&gt;
+- In each case:
+   - The **miscoverage** of naive CV (CV) and nested CV (NCV) are reported where
+the **nominal miscoverage** rate is `\(10\%\)`.
+   - The **width** of NCV intervals are expressed relative to the width of CV intervals.
+   - 10-fold CV and 10-fold-NCV with `\(200\)` splits are used.
+- `\(R\)` scripts of reproducing experiments are available at: https://github.com/stephenbates19/nestedcv_experiments.  ,
 
 ---
-- For low dimensional setting where `\(n=100\)` and `\(p=20\)`,
+# Simulation results: Low-dimensional setting results
+&lt;br&gt;
+- `\(n=100\)`, `\(p=20\)`, and (un-regularized) logistic regression is used as fitting algorithm.
+- Nested CV gives **coverage more closer** to the nominal level.
 
+&lt;img src="imgs/result1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+- A "Hi" miscoverage is one where the **confidence interval is too large** and the point estimate falls below the interval; conversely for a "Lo" miscoverage.
 
 ---
-- For high dimensional setting where `\(n={90,200}\)` and `\(p=100\)`,
----
-- We estimate the parameters using `\(\ell_1-\)` penalized logistic regression with a fixed
-penalty level. random split 200.
+# Simulation results: High-dimensional setting results
+&lt;br&gt;
+- `\(n={90,200}\)`, `\(p=100\)`, and `\(\ell_1\)` penalized logistic regression with a fixed
+penalty level is used as fitting algorithm.
+- Nested CV gives **coverage more closer** to the nominal level.
 
-
+&lt;img src="imgs/result2.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 # Future work
