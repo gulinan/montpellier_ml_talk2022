@@ -35,7 +35,7 @@ library(tidyverse)
 ---
 # Motivation continu'ed
 <br>
-- From a practical point of view, <b><span style="color:#067373;">cross-validation (CV)</span></b> is one of the widely-used resampling-based approaches to estimate a <b><span style="color:#067373;">point estimate</span></b> and to build <b><span style="color:#067373;">confidence intervals</span></b> for prediction error.
+- From a practical point of view, <b><span style="color:#067373;">cross-validation (CV)</span></b> is one of the widely-used resampling-based approaches to estimate a <b><span style="color:#067373;">point estimate</span></b> and to build a <b><span style="color:#067373;">confidence interval</span></b> for prediction error.
 - However, <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> discuss that (statistical) properties of CV estimator of prediction error are **not well-understood** despite CV has a very simple functionality.
 
 ---
@@ -48,18 +48,18 @@ library(tidyverse)
 ---
 # Aim continu'ed
 <br> 
-- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> secondly show that </span></b> the <b><span style="color:#067373;">naive confidence intervals</span></b> based on CV estimate of prediction error give **poor coverage**, which are far below nominal level since the estimation of variance used to compute the width of the interval does not account for the **correlation between error estimates** in different folds, which arises  because each data point is used for both training and testing.  
-- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> propose the <b><span style="color:#067373;">nested cross-validation (NCV)</span></b> approach which delivers confidence intervals with a **coverage close to the nominal level**.  
-- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> validate their work with theory and extensive numerical experiments (both simulation studies and real data examples).
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> secondly show that </span></b> the <b><span style="color:#067373;">naive confidence intervals</span></b> based on CV estimate of prediction error give **poor coverage** since the variance of error estimates used to compute the width of the interval does not account for the **correlation between error estimates** in different folds, which arises from the fact that each data point is used both in training and testing.  
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> propose the <b><span style="color:#067373;">nested cross-validation (NCV)</span></b> approach which provides confidence intervals with a **coverage close to the nominal level**.  
+- <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> validate their work through deep theory and extensive numerical experiments (both simulation studies and real data examples).
  
 ---
 # Setting and notation
 <br>
 - Consider a <b><span style="color:#067373;">supervised learning </span></b> setting.  
-- We have <b><span style="color:#067373;">feature matrix</span></b> $X=(X_1, \ldots, X_n)  \in \mathcal{X}^{n \times p }$
-and <b><span style="color:#067373;">response vector </span></b> $Y=(Y_1, \ldots, Y_n)  \in \mathcal{Y}^{n}$.
-- We assume that each <b><span style="color:#067373;">data point</span></b> $(X_i,Y_i)$ for $i=1,\ldots,n$
-are i.i.d. from a <b><span style="color:#067373;"> distribution</span></b> $P$. 
+- We have a data $(X, Y)$, where $X=(X_1, \ldots, X_n)  \in \mathcal{X}^{n \times p }$ is the <b><span style="color:#067373;">feature matrix</span></b> 
+and $Y=(Y_1, \ldots, Y_n)  \in \mathcal{Y}^{n}$ is the <b><span style="color:#067373;">response vector</span></b>.
+- We assume that each <b><span style="color:#067373;">data point </span></b> $(X_i,Y_i)$, $i=1,\ldots,n$,
+is i.i.d. from a <b><span style="color:#067373;"> distribution</span></b> $P$. 
 
 ```{r, eval=F, echo=F}
 with each $X_i \in \mathbb{R}^{p}$
@@ -68,22 +68,21 @@ with each $X_i \in \mathbb{R}^{p}$
 ---
 # Setting and notation continu'ed
 <br>
-- Consider a <b><span style="color:#067373;">class of models </span></b> parameterized by $\theta$.
-- We let $\widehat f(x, \theta)$ be the <b><span style="color:#067373;">function that predicts</span></b> $y$ from $x \in \mathbb{R}^{p}$, where $\theta$ takes values in some space $\Theta$.
-- We let $\mathcal{A}$ be a <b><span style="color:#067373;">model-fitting algorithm</span></b> that takes data points and returns a parameter vector $\widehat \theta \in \Theta$. 
-- We let $\hat \theta =\mathcal{A}(X,Y)$ be the <b><span style="color:#067373;"> fitted value of the parameter </span></b> based on the observed data $X$ and $Y$. 
-
+- Consider a <b><span style="color:#067373;">class of models </span></b> parameterized by vector $\theta$.
+- We assume that $\widehat f(x, \theta)$ is the <b><span style="color:#067373;">function that predicts</span></b> $y$ from $x \in \mathbb{R}^{p}$ using the model with parameter $\theta$, where $\theta$ takes values in some space $\Theta$.
+- We let $\mathcal{A}$ be a <b><span style="color:#067373;">model-fitting algorithm</span></b> that returns the <b><span style="color:#067373;">fitted value</span></b> of the parameter vector, $\widehat \theta =\mathcal{A}(X,Y) \in \Theta$ based on the observed data $(x, y)$. 
 ---
 # Prediction error 
 <br>
-- In <b><span style="color:#067373;">measuring accuracy of a model</span></b>, we are interested in <b><span style="color:#067373;">out-of-sample error</span></b> which is defined as the <b><span style="color:#067373;">expected loss on unseen data points</span></b> :
+- In <b><span style="color:#067373;">measuring the accuracy of a model</span></b>, we are interested in <b><span style="color:#067373;"> prediction error (out-of-sample error)</span></b> which is defined as the <b><span style="color:#067373;">expected loss on future data points</span></b> $(X_{n+1},Y_{n+1})$:
 
 \begin{equation}
 Err_{XY}: = \mathbb{E}\bigg[	\ell \big(\hat{f}(X_{n+1},\hat \theta ),Y_{n+1}\big) \vert (X,Y) \bigg] , \nonumber
 \end{equation}
 
 - where $(X_{n+1},Y_{n+1})$ is an <b><span style="color:#067373;">independent test point</span></b> from the same distribution $P$. 
-- The expression $\hat{f}(X_{n+1},\hat \theta)$ is the <b><span style="color:#067373;">predicted value</span></b> of $Y_{n+1}$ at the future point $X_{n+1}$ and $\hat \theta$ is the fitted value of the parameter estimated through algorithm $\mathcal{A}$ based on the training data $(X,Y)$.
+- The expression $\hat{f}(X_{n+1},\hat \theta)$ is the <b><span style="color:#067373;">predicted value</span></b> of $Y_{n+1}$ at the future point $X_{n+1}$ and 
+- $\hat \theta$ is the fitted value of the parameter estimated through algorithm $\mathcal{A}$ based on the training data $(X,Y)$.
 - The expression $\ell \big(\hat{f}(X_{n+1},\hat \theta ),Y_{n+1}\big)$ is the <b><span style="color:#067373;">loss</span></b> between predicted value of $Y_{n+1}$ and $Y_{n+1}$ itself.
 - Here, the <b><span style="color:#067373;">loss function</span></b> $\ell(.)$ could be squared error loss, classification error, or deviance (cross-entropy). 
 - Furthermore $Err_{XY}$ can be considered as a <b><span style="color:#067373;">random quantity</span></b>  depending on the training data $(X,Y)$.
@@ -91,9 +90,9 @@ Err_{XY}: = \mathbb{E}\bigg[	\ell \big(\hat{f}(X_{n+1},\hat \theta ),Y_{n+1}\big
 ---
 # Expected prediction error
 <br>
-- On the other hand, in designing and comparing <b><span style="color:#067373;">learning algorithms</span></b> themselves, we are interested in their <b><span style="color:#067373;">average performance</span></b> on predicting future test points.
-- We can formally define this quantity as
-the <b><span style="color:#067373;">expected value of prediction error when training over possible data sets of size n drawn from the same data distribution $P$</span></b>:
+- On the other hand, we may also be interested in learning algorithms' <b><span style="color:#067373;">average performance on predicting future test points</span></b>  when designing and comparing <b><span style="color:#067373;">algorithms</span></b> with each other.
+- This quantity of interest can be formally defined as
+the <b><span style="color:#067373;">expected value of prediction error</span></b> across possible training data sets of size n drawn from the same data distribution $P$:
 
 \begin{equation}
 Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
@@ -110,8 +109,9 @@ Err :=\mathbb{E}\big[Err_{XY}\big].\nonumber
 ---
 # K-fold cross-validation
 <br>
-- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we randomly partition the data into equally sized <b><span style="color:#067373;">disjoint
-folds (subsets)</span></b> $\mathcal{I}_k$ $(k=1,\ldots,K)$, where the fold size is $m=n/K$ and the whole data is $\mathcal{I} = \cup_{k=1}^{K} \mathcal{I}_k$.
+- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we randomly partition the data $(X,Y) = \mathcal{I}$ into $K$ equally sized <b><span style="color:#067373;">disjoint
+folds (subsets)</span></b> $\mathcal{I}_k$ $(k=1,\ldots,K)$.
+- Here the fold size is $m=n/K$ and the whole data is $\mathcal{I} = \cup_{k=1}^{K} \mathcal{I}_k$.
 - When the data point $(x_i,y_i) \in \mathcal{I}_k$, we will also write $i \in \mathcal{I}_k$ $(k=1,\ldots,K)$.
 
 ```{r, echo=F, out.width="13%", fig.cap="<i>Partition of the data into K-folds.</i>"}
@@ -123,15 +123,15 @@ knitr::include_graphics("imgs/K_CV_single.png")
 ---
 
 - Consider the first fold $\mathcal{I}_{1}$ and hold it out as future data set (or <b><span style="color:#067373;">test set</span></b>).
-- The data points $(x_i,y_i) \in \mathcal{I} \backslash \mathcal{I}_{1}$, which are not in the first fold, are called as <b><span style="color:#067373;">training set</span></b>.
+- The **remaining data points** $(x_i,y_i) \in \mathcal{I} \backslash \mathcal{I}_{1}$, which are not in the first fold, are called as <b><span style="color:#067373;">training set</span></b>.
 - Let $\hat \theta^{(-1)} = \mathcal{A}\big((X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}\big)$  be the **model fit on training data set**, then
-we calculate the **prediction error** over fixed $\mathcal{I}_{1}$ set as follows:
+we can calculate the **prediction error** for future data set $\mathcal{I}_{1}$, of size  $m$, as follows:
 
 \begin{equation}
  \frac{1}{m} \sum_{{i} \in \mathcal{I}_1}\ell \big(\hat{f}(x_{i},\hat \theta^{(-1) } ),y_i\big).
 \end{equation}
 ---
-- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we repeat this process for each fold $(k=1,\ldots,K)$.
+- In <b><span style="color:#067373;">K-fold cross-validation</span></b>, we **iteratively repeat** this process for each fold $(k=1,\ldots,K)$.
 
 
 ```{r, echo=F, out.width="60%", fig.cap="<i>K-fold cross-validation.</i>"}
@@ -143,7 +143,7 @@ knitr::include_graphics("imgs/K_CV.png")
 ---
 # CV estimate of prediction error
 <br>
-- The **average of errors over K folds** is given as follows:
+- The **average of prediction errors over K folds** is given as follows:
 
 \begin{equation}
 	\widehat {Err} ^{(CV)} := \frac{1} {K} \sum_{k=1}^{K} \frac{1} {m}\sum_{{i} \in \mathcal{I}_k} \ell \big(\hat{f}(x_{i},\hat \theta^{(-1)}),y_i\big).
@@ -156,15 +156,15 @@ knitr::include_graphics("imgs/K_CV.png")
 # What prediction error are we estimating?
 
 <br>
-- $Err_{XY}$ is the <b><span style="color:#067373;">prediction error of the model which was fit on the training set</span></b>.
-- $Err$ is the <b><span style="color:#067373;">average of the fitting algorithm run on the same-sized data sets drawn
+- $Err_{XY}$ is the <b><span style="color:#067373;">prediction error of the model which is fit on the training data set</span></b>.
+- $Err$ is the <b><span style="color:#067373;">average of the fitting algorithm runs on the same-sized data sets drawn
 from the same distribution $P$.</span></b>
-- The former quantity is of the most interest to a practitioner deploying a specific model, whereas the latter  may be of interest to a researcher comparing different fitting algorithms.
+- The **former quantity** is of the most interest to a practitioner **deploying a specific model**, whereas the **latter**  may be of interest to a researcher **comparing different fitting algorithms**.
 
 ---
-- Some studies such as Zhang (1995), Hastie et al. (2009), and Yousef (2020)
-have observed that **cross-validation estimate provides little information** about $Err_{XY}$ which is also called as _weak correlation_ problem in the literature.
-- For the special case of the linear model, <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> claim that CV should be **considered as an estimate** of $Err$  rather than $Err_{XY}$.
+- Some earlier studies such as Zhang (1995), Hastie et al. (2009), and Yousef (2020)
+have observed that **cross-validation estimate provides little information** about $Err_{XY}$, which is also called as _weak correlation_ problem in the literature.
+- For the special case of the linear model, <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b> claim that CV estimate should be **considered as an estimate** of $Err$  rather than $Err_{XY}$.
 
 
 ---
@@ -176,7 +176,7 @@ have observed that **cross-validation estimate provides little information** abo
 y_i = x_{i}^{T} \theta + \epsilon_i \quad \text{where} \quad \epsilon_i \overset{i.i.d.}{\sim} N(0,\sigma^2)  \quad \text{i=1,...,n.}
 \end{equation}
 
-- Define a <b><span style="color:#067373;">new key quantity</span></b> as follows:
+- Define a <b><span style="color:#067373;">new (mid) key quantity</span></b> as follows:
 
 \begin{equation}
 Err_{X} := \mathbb{E}[Err_{XY} | X],
