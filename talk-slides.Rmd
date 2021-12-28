@@ -199,7 +199,7 @@ $\widehat {Err}^{(CV)}$, is linearly invariant.
 
 --
 
-- << Under this setting, residuals turns out to be the same for both **original** $(x_{1}, y_{1}),...,(x_{n}, y_{n})$ and **shifted data** $(x_{1}, y_{1}^{'}),...,(x_{n}, y_{n}^{'})$, where $(y_{i}^{'} = y_{i} + x_{i}^{T} \kappa)$. Since the CV estimate of prediction error is the mean of the squared residuals, then the CV estimate of prediction error also turns out to be **the same** for both the **original data** and the **shifted data**. >>
+- << Under this setting, residuals turns out to be the same for both **original** $(x_{1}, y_{1}),...,(x_{n}, y_{n})$ and **shifted data** $(x_{1}, y_{1}^{'}),...,(x_{n}, y_{n}^{'})$, where $(y_{i}^{'} = y_{i} + x_{i}^{T} \kappa)$. Since the CV estimate of prediction error is the mean of the squared residuals, the CV estimate of prediction error also turns out to be **the same** for both the **original data** and the **shifted data**. >>
 
 ---
 - **Theorem 1:** Assume homoskedastic Gaussian linear model holds and that we use
