@@ -213,17 +213,17 @@ squared-error loss function. Let `\(\widehat {Err}\)` be a **linearly invariant 
 error** (such as `\(\widehat {Err}^{(CV)}\)` using OLS as the fitting algorithm). Then,
 
 `\begin{equation}
-\widehat {Err} \perp Err_{XY} \quad | \quad X.
+ Err_{XY} \perp \widehat {Err} \quad | \quad X.
 \end{equation}`
 
 --
 - &lt;&lt; Recall from classical linear regression theory that when using OLS, the **estimated coefficient** vector `\(\widehat {\theta}\)` is independent of the **residuals** `\((Y-X\widehat {\theta})\)`:
 
 `\begin{equation}
-\widehat {\theta} \perp (Y-X\widehat {\theta}) \quad | \quad X.
+ \widehat {\theta} \perp  (Y-X\widehat {\theta}) \quad | \quad X.
 \end{equation}`
 
-- Since `\(Err_{XY}\)`  is a function of `\(\widehat {\theta}\)` only, which is the OLS estimate of `\(\theta\)`, and any linearly invariant estimate of prediction error `\(Err\)` is a function only of residuals, `\(Y-X\widehat {\theta}\)`, by the invariance property, then `\(\widehat {Err} \perp Err_{XY} \quad | \quad X\)`. &gt;&gt;
+- Since `\(Err_{XY}\)`  is a function of `\(\widehat {\theta}\)` only, which is the OLS estimate of `\(\theta\)`, and any linearly invariant estimate of prediction error `\(Err\)` is a function only of residuals, `\(Y-X\widehat {\theta}\)`, by the invariance property, then `\(Err_{XY} \perp \widehat{Err} \quad | \quad X\)`. &gt;&gt;
 
 ---
 - **Corollary 1:**  Under the conditions of Theorem 1, we get the following decomposition:
@@ -238,18 +238,25 @@ error** (such as `\(\widehat {Err}^{(CV)}\)` using OLS as the fitting algorithm)
 
 - This implies that `\(\widehat Err^{CV}\)` is a better estimate of the intermediate quantity `\(Err_{X}\)` than of `\(Err_{XY}\)`.
 
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imgs/paper_fig2.png" alt="&amp;lt;i&amp;gt;Possible targets of inference for cross-validation.&amp;lt;/i&amp;gt;" width="60%" /&gt;
+&lt;p class="caption"&gt;&lt;i&gt;Possible targets of inference for cross-validation.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
 ---
 # Example
 &lt;br&gt;
 - Consider an experiment in a simple linear model with `\(n=100\)` observations
-and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated `\(n=2000\)` times with the same feature matrix `\(X\)`.
+and `\(p=20\)` features `\(\overset{i.i.d.}{\sim} N(0,1)\)`, which is replicated `\(2000\)` times. 
 - **MSE** of `\(\widehat {Err} ^{(CV)}\)` relative to **three estimands**: `\(Err\)`, `\(Err_{X}\)`, and `\(Err_{XY}\)`.
 
 &lt;img src="imgs/paper_fig3a.png" width="30%" style="display: block; margin: auto;" /&gt;
 
 - **Side note:** Each pair of points connected by a line represents the 2000 replicates with the same feature matrix `\(X\)`.
 ---
-- We see that `\(\widehat {Err} ^{(CV)}\)` has **lower MSE** for `\(Err_{X}\)` than `\(Err_{XY}\)`.
+- We see that `\(\widehat {Err}^{(CV)}\)` has **lower MSE** for `\(Err_{X}\)` than `\(Err_{XY}\)`.
 - These results suggest that, `\(Err_{X}\)` is a more **natural target of inference** (estimand) rather than `\(Err_{XY}\)` for `\(\widehat {Err} ^{(CV)}\)`.
 
 &lt;br&gt;
@@ -308,12 +315,12 @@ is **closer** to `\(Err\)` and `\(Err_{X}\)` than to `\(Err_{XY}\)` in the propo
 \Big(\widehat {Err}^{(CV)} - z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \quad, \quad \widehat {Err}^{(CV)} + z_{1-(\frac{\alpha}{2})} \times \widehat{se}^{(CV)} \Big),
 \end{equation}`
 
-- where `\(z_{1- (\frac{\alpha}{2}) }\)` is the `\(1- (\frac{\alpha}{2})\)` quantile of the standard normal distribution. 
+- where `\(0 &lt; \alpha &lt; 1\)`, `\(z_{1- (\frac{\alpha}{2}) }\)` is the `\(1- (\frac{\alpha}{2})\)` quantile of the standard normal distribution. 
 - The intervals are called as &lt;b&gt;&lt;span style="color:#067373;"&gt;naive cross-validation intervals&lt;/span&gt;&lt;/b&gt;.
 
 - However, since every data point is used in both in training and testing, we **cannot accept** that are `\(e_i\)`'s are **independent** of each other. 
 
-- Any **confidence interval** built on it would have **poor coverage**.
+- Any **confidence interval** built on this assumption would have **poor coverage**.
 
 ---
 # Example re-visited
@@ -322,7 +329,7 @@ is **closer** to `\(Err\)` and `\(Err_{X}\)` than to `\(Err_{XY}\)` in the propo
 
 &lt;img src="imgs/paper_fig3b.png" width="30%" style="display: block; margin: auto;" /&gt;
 
-- The naive CV intervals **fail** due to larger miscoverage rates. 
+- The naive CV intervals **fail** due to large miscoverage rates. 
 - **Side note:** The nominal miscoverage rate is `\(10\%\)`.
 ---
 &lt;style type="text/css"&gt;
@@ -359,7 +366,7 @@ Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{
 ]
 
 ---
-- The constants `\(a_2\)` and `\(a_3\)` will typically be positive, in which case 
+- The constants `\(a_2\)` and `\(a_3\)` will typically be positive, in which case: 
 
 `\begin{equation}
 Var(\widehat {Err}^{(CV)}) &gt; \frac{1}{n}a_1,
