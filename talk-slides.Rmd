@@ -124,7 +124,7 @@ knitr::include_graphics("imgs/K_CV_single.png")
 
 - Consider the first fold $\mathcal{I}_{1}$ and hold it out as future data set (or <b><span style="color:#067373;">test set</span></b>).
 - The **remaining data points** $(x_i,y_i) \in \mathcal{I} \backslash \mathcal{I}_{1}$, which are not in the first fold, are called as <b><span style="color:#067373;">training set</span></b>.
-- Let $\hat \theta^{(-1)} = \mathcal{A}\big((X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}\big)$  be the **model fit on training data set**, then
+- Let $\hat \theta^{(-1)} = \mathcal{A}\big((X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}\big)$  be the **parameter estimate based on training data set**, then
 we can calculate the **prediction error** for future data set $\mathcal{I}_{1}$, of size  $m$, as follows:
 
 \begin{equation}
@@ -376,7 +376,7 @@ Var(\widehat {Err}^{(CV)}) > \frac{1}{n}a_1,
 
 
 ---
-# Target of inference: Confidence intervals for $Err_{XY}$
+# Target of inference: Confidence intervals 
 <br>
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b>
 develops an **estimator** that **empirically estimate the variance** of $\widehat{Err}^{(CV)}$ across many subsamples and use it to construct confidence intervals for $Err_{XY}$ which are often of the **most interest to the analysts**.
@@ -465,7 +465,7 @@ knitr::include_graphics("imgs/paper_fig8.png")
 ---
 # Simulation experiments: Data generation scenario
 <br>
-- The **coverage** of nested CV approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
+- The **coverage** of nested CV intervals approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
 - Consider a **sparse logistic data generating model**:
 
 \begin{align}
@@ -481,7 +481,7 @@ $\theta = c \times (1,1,1,1,0,0,...)^{T} \in \mathcal{R}^{p}$ and
 # Simulation experiments: Performance metrics
 <br>
 - In each case:
-   - The **miscoverage** of naive CV (CV) and nested CV (NCV) are reported where
+   - The **miscoverage** of naive CV (CV) and nested CV (NCV) intervals are reported where
 the **nominal miscoverage** rate is $10\%$.
    - The **width** of NCV intervals are expressed relative to the width of CV intervals.
    - 10-fold CV and 10-fold-NCV with $200$ splits are used.

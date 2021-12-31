@@ -128,7 +128,7 @@ folds (subsets)&lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_k\)` `\((k=1,\ldots,K)\)`.
 
 - Consider the first fold `\(\mathcal{I}_{1}\)` and hold it out as future data set (or &lt;b&gt;&lt;span style="color:#067373;"&gt;test set&lt;/span&gt;&lt;/b&gt;).
 - The **remaining data points** `\((x_i,y_i) \in \mathcal{I} \backslash \mathcal{I}_{1}\)`, which are not in the first fold, are called as &lt;b&gt;&lt;span style="color:#067373;"&gt;training set&lt;/span&gt;&lt;/b&gt;.
-- Let `\(\hat \theta^{(-1)} = \mathcal{A}\big((X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}\big)\)`  be the **model fit on training data set**, then
+- Let `\(\hat \theta^{(-1)} = \mathcal{A}\big((X_i,Y_i)_{i \in \mathcal{I} \backslash \mathcal{I}_{1}}\big)\)`  be the **parameter estimate based on training data set**, then
 we can calculate the **prediction error** for future data set `\(\mathcal{I}_{1}\)`, of size  `\(m\)`, as follows:
 
 `\begin{equation}
@@ -377,7 +377,7 @@ Var(\widehat {Err}^{(CV)}) &gt; \frac{1}{n}a_1,
 
 
 ---
-# Target of inference: Confidence intervals for `\(Err_{XY}\)`
+# Target of inference: Confidence intervals 
 &lt;br&gt;
 - &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt;
 develops an **estimator** that **empirically estimate the variance** of `\(\widehat{Err}^{(CV)}\)` across many subsamples and use it to construct confidence intervals for `\(Err_{XY}\)` which are often of the **most interest to the analysts**.
@@ -462,7 +462,7 @@ one being `\(\mathcal{I}_{(out)}\)`.
 ---
 # Simulation experiments: Data generation scenario
 &lt;br&gt;
-- The **coverage** of nested CV approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
+- The **coverage** of nested CV intervals approach is investigated for **classification** and **regression** problems over synthetic data sets (and real data sets).
 - Consider a **sparse logistic data generating model**:
 
 `\begin{align}
@@ -478,7 +478,7 @@ Pr(Y_i = 1 | X_i = x_i) = \frac{1}{1 + \exp(-x_{i}^{T}\theta)}, \quad \text{i=1,
 # Simulation experiments: Performance metrics
 &lt;br&gt;
 - In each case:
-   - The **miscoverage** of naive CV (CV) and nested CV (NCV) are reported where
+   - The **miscoverage** of naive CV (CV) and nested CV (NCV) intervals are reported where
 the **nominal miscoverage** rate is `\(10\%\)`.
    - The **width** of NCV intervals are expressed relative to the width of CV intervals.
    - 10-fold CV and 10-fold-NCV with `\(200\)` splits are used.
