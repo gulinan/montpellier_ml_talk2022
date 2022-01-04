@@ -379,7 +379,7 @@ Var(\widehat {Err}^{(CV)}) > \frac{1}{n}a_1,
 # Target of inference: Confidence intervals 
 <br>
 - <b><span style="color:#067373;">Bates, Hastie, and Tibshirani (2021)</span></b>
-develops an **estimator** that **empirically estimate the variance** of $\widehat{Err}^{(CV)}$ across many subsamples and use it to construct confidence intervals for $Err_{XY}$ which are often of the **most interest to the analysts**.
+develops an **estimator** that **empirically estimate the variance** of $\widehat{Err}^{(CV)}$ across many subsamples.
 
 - **Definition 2:** For a sample of size n split into K folds, the cross-validation MSE is:
 
