@@ -6,8 +6,7 @@ institute: " <br>Istanbul Technical University"
 date: " <br><i>Machine Learning in Montpellier, Theory & Practice, <br> January 6th, 2022 </i>"
 output:
   xaringan::moon_reader:
-    css: ["metropolis", "cal.css"]
-    lib_dir: libs
+    css: ["metropolis.css", "cal.css"]
     nature:
       highlightStyle: atelier-forest-light
       highlightLines: true
