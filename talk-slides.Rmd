@@ -15,8 +15,6 @@ output:
       ratio: '16:9'
 ---
 
-
-
 ```{r include = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.align = "center")
 library(tidyverse)
