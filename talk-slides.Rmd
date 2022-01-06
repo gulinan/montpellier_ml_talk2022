@@ -119,7 +119,7 @@ folds (subsets)</span></b> $\mathcal{I}_k$ $(k=1,\ldots,K)$.
 knitr::include_graphics("imgs/K_CV_single.png")
 ```
 
-<div style="text-align:right;"><font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font></div>
+
 
 ---
 
@@ -139,7 +139,7 @@ we can calculate the **prediction error** for future data set $\mathcal{I}_{1}$,
 knitr::include_graphics("imgs/K_CV.png")
 ```
 
-<div style="text-align:right;"><font size="4px"><a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png">Image Source</a></font></div>
+
 
 ---
 # CV estimate of prediction error
@@ -361,8 +361,6 @@ Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{
 ```{r, echo=F, out.width="60%", fig.cap="<i>Structure of the covariance matrix of errrors.</i>"}
 knitr::include_graphics("imgs/covariance_structure.png")
 ```
-
-<div style="text-align:right;"><font size="4px"><a href="https://www.jmlr.org/papers/volume5/grandvalet04a/grandvalet04a.pdf">Image Source</a></font></div>
 ]
 
 ---
