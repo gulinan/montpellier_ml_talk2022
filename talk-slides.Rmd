@@ -15,10 +15,7 @@ output:
       ratio: '16:9'
 ---
 
-```{r xaringan-scribble, echo=FALSE}
-xaringanExtra::use_scribble(pen_color="#1A292C") #activate for the pencil
-xaringanExtra::use_panelset() #panel set
-```
+
 
 ```{r include = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.align = "center")
