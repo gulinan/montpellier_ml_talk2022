@@ -124,7 +124,7 @@ folds (subsets)&lt;/span&gt;&lt;/b&gt; `\(\mathcal{I}_k\)` `\((k=1,\ldots,K)\)`.
 &lt;p class="caption"&gt;&lt;i&gt;Partition of the data into K-folds.&lt;/i&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
 ---
 
@@ -145,7 +145,7 @@ we can calculate the **prediction error** for future data set `\(\mathcal{I}_{1}
 &lt;p class="caption"&gt;&lt;i&gt;K-fold cross-validation.&lt;/i&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.researchgate.net/profile/Mingchao-Li/publication/331209203/figure/fig2/AS:728070977748994@1550597056956/K-fold-cross-validation-method.png"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 
 ---
 # CV estimate of prediction error
@@ -363,6 +363,8 @@ Var(\widehat {Err}^{(CV)}) = \frac{1}{n}a_1 + \frac{n/K-1}{n}a_2 + \frac{n-n/K}{
 &lt;img src="imgs/covariance_structure.png" alt="&amp;lt;i&amp;gt;Structure of the covariance matrix of errrors.&amp;lt;/i&amp;gt;" width="60%" /&gt;
 &lt;p class="caption"&gt;&lt;i&gt;Structure of the covariance matrix of errrors.&lt;/i&gt;&lt;/p&gt;
 &lt;/div&gt;
+
+&lt;div style="text-align:right;"&gt;&lt;font size="4px"&gt;&lt;a href="https://www.jmlr.org/papers/volume5/grandvalet04a/grandvalet04a.pdf"&gt;Image Source&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
 ]
 
 ---
@@ -508,7 +510,7 @@ penalty level is used as fitting algorithm.
 &lt;br&gt;
 - Nested CV is more **computationally intensive** than standard CV, but, parallel programming can be used for speeding up the algorithm.
 - It is well-known that CV is also commonly used for selecting a good value of a learning algorithm's hyperparameters (fine-tuning).
-- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; expect that NCV would be of use for hyperparameter selection since it yields more accurate confidence intervals for prediction error. 
+- &lt;b&gt;&lt;span style="color:#067373;"&gt;Bates, Hastie, and Tibshirani (2021)&lt;/span&gt;&lt;/b&gt; expect that NCV would be of use for hyperparameter selection since it yields more accurate confidence intervals for prediction error.
 
 ---
 
