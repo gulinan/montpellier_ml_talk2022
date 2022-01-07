@@ -1,5 +1,5 @@
 ---
-title: "<b>Cross-validation: What does it estimate and how well does it?</b>"
+title: "<b>Cross-validation: What does it estimate and how well does it do it?</b>"
 subtitle: "by Stephen Bates, Trevor Hastie, and Robert Tibshirani <br> " 
 author: "Gül İnan <br> "
 institute: " <br>Istanbul Technical University"
